@@ -2,8 +2,6 @@
   <img src="https://github.com/CANDY-HOUSE/SDK_Android_Sesame_Demo/raw/master/SesameSDK_Kotlin.jpg" alt="CANDY HOUSE Sesame SDK" title="SesameSDK">
 </p>
 
-# SDK_Android_Sesame_Demo
-
 SesameSDK on Android is a delightful Bluetooth library for your Android app. The official Sesame app is built on this SesameSDK. By using SesameSDK, your app will have **ALL** functions and features that Sesame app has, which means, you will be able to
 
 - Register Sesame
