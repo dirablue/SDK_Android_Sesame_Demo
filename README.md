@@ -19,7 +19,6 @@ with your app.<br>Please note, SesameSDK currently only supports ___Sesame 2___ 
 ## Quick Start
 
 - Download SesameSDK and try the included Android sample app.
-- Read [Google Slides documentation](https://docs.google.com/presentation/d/1ms6W1ljdULRB0hyiKdXTzQwN9LeCVXVeEiwN1pF7_G4/edit?usp=sharing).
 
 
 ## Requirements
