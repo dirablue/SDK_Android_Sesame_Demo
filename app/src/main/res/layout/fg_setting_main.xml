@@ -1,0 +1,224 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray0"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/statusbg">
+
+        <ImageView
+            android:id="@+id/backicon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingRight="12dp"
+            android:rotation="180"
+            android:scaleType="center"
+            android:src="@drawable/ic_arrow" />
+
+
+        <TextView
+            android:id="@+id/titlec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:text="register page"
+            android:textColor="@color/title">
+
+        </TextView>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/menu">
+
+        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@color/white"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context="com.candyhouse.app.tabs.devices.DeviceListFG"
+            tools:listitem="@layout/cell_member" />
+
+
+        <RelativeLayout
+            android:id="@+id/chenge_angle_zone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/list"
+            android:layout_marginTop="24dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="@string/change_sesame_angle"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/change_ssm_name_zone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/chenge_angle_zone"
+            android:layout_marginTop="1dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="@string/change_sesame_name"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/change_ssm_fr_zone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/change_ssm_name_zone"
+            android:layout_marginTop="1dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="@string/ssm_update"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/firmwareVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="version"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/qutolock_zone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/change_ssm_fr_zone"
+            android:layout_marginTop="1dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="@string/autolock"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/autolock_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="-"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/autolock_status"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="@string/second"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/autolockSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp" />
+        </RelativeLayout>
+        <com.utils.wheelview.WheelView
+
+            android:layout_below="@+id/qutolock_zone"
+
+            android:id="@+id/wheelview"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_weight="1.0"
+
+            android:visibility="gone"
+            android:focusable="true"
+            android:gravity="center"
+            app:dragOut="true"
+            app:textColor="@color/black"
+            app:textSize="12sp"
+            />
+        <RelativeLayout
+            android:id="@+id/delete_zone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/wheelview"
+            android:layout_marginTop="20dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="@string/ssm_delete"
+                android:textColor="@color/red"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

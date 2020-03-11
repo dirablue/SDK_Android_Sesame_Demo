@@ -1,0 +1,123 @@
+<!--
+  ~ Copyright 2019, The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">Sesame</string>
+    <string name="select_an_avatar">Select an Avatar</string>
+    <string name="name">Name</string>
+    <string name="email">Eメール</string>
+    <string name="password">パスワード</string>
+    <string name="new_password">新しいパスワード</string>
+    <string name="sign_up">登録</string>
+    <string name="wins">Wins</string>
+    <string name="done">Done</string>
+    <string name="title_about">About</string>
+    <string name="title_registered">Registered</string>
+    <string name="title_me">自分</string>
+    <string name="title_list">セサミ</string>
+    <string name="title_detail">Profile</string>
+    <string name="cd_home">Home!!</string>
+    <string name="cd_list">List</string>
+    <string name="cd_form">Form</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">ログアウト</string>
+    <string name="Sesame">セサミ</string>
+    <string name="title_friends">連絡先</string>
+    <string name="change_sesame_name">セサミの名前を変更</string>
+    <string name="edit_name">名前を変更</string>
+    <string name="qrhint">QRコードをスキャンして連絡先へ追加してください</string>
+    <string name="change_sesame_angle">角度の設定</string>
+    <string name="ssm_update">SesameOSをアップデート</string>
+    <string name="autolock">オートロック</string>
+    <string name="ssm_delete">セサミを削除</string>
+    <string name="cancel">キャンセル</string>
+    <string name="last_name">姓</string>
+    <string name="first_name">名</string>
+    <string name="delete_friend">連絡先を削除</string>
+    <string name="manual_operated">サムターンに動きあり</string>
+    <string name="forget_password">パスワードをお忘れですか？</string>
+    <string name="login">ログイン</string>
+    <string name="verification">認証する</string>
+    <string name="verification_code">認証</string>
+    <string name="send_verification_code">認証コードを送信する</string>
+    <string name="re_send_verification_code">認証コードを再送信する</string>
+    <string name="set_lock_position">施錠の角度を設定</string>
+    <string name="set_unlock_position">解錠の角度を設定</string>
+    <string name="second">秒後</string>
+
+
+
+</resources>
+
+
+    <!--    "Add Contacts" = "連絡先の追加";-->
+    <!--    "New Sesame" = "新規セサミ";-->
+    <!--    "Full Name" = "お名前";-->
+    <!--    "Delete this Sesame" = "セサミを削除";-->
+    <!--    "autolock" = "オートロック";-->
+    <!--    "manualOperated" = "サムターンに動きあり";-->
+    <!--    "manualLock" = "手動施錠";-->
+    <!--    "manualUnlock" = "手動解錠";-->
+    <!--    "Set Lock Position" = "施錠の角度を設定";-->
+    <!--    "Set Unlock Position" = "解錠の角度を設定";-->
+    <!--    "Change Sesame Name" = "セサミの名前を変更";-->
+    <!--    "sesame_2" = "セサミ2";-->
+    <!--    "Verification code" = "認証";-->
+    <!--    "Verification" = "認証する";-->
+
+    <!--    "Forget password" = "パスワードをお忘れですか？";-->
+    <!--    "Re-send verification code" = "認証コードを再送信する";-->
+    <!--    "Send verification code" = "認証コードを送信する";-->
+
+    <!--    "New Password" = "新しいパスワード";-->
+    <!--    "Change Success" = "変更成功";-->
+    <!--    "No Scanable Devices" = "デバイスなし";-->
+    <!--    "No Friends" = "連絡先なし";-->
+    <!--    "Scan in the Frame" = "スキャンする";-->
+    <!--    "DEVICE_NOT_FOUND" = "DEVICE_NOT_FOUND ";-->
+    <!--    "User is not confirmed." = "User is not confirmed.";-->
+    <!--    "An account with the given email already exists." = "An account with the given email already exists.";-->
+    <!--    "OK" = "OK";-->
+    <!--    "sec" = "秒後";// After X sec  ->  _ X 秒後-->
+    <!--    "After" = "";-->
+    <!--    "Too Close" = "近すぎる";-->
+    <!--    "Sesame Name" = "セサミの名前";-->
+    <!--    "You have successfully changed the password" = "パスワードの変更完了しました";-->
+    <!--    "No Devices" = "登録デバイスなし";-->
+    <!--    "No Contacts" = "連絡先なし";-->
+    <!--    "Scan the QR code" = "QRコードをスキャンする";-->
+    <!--    "Assign Name to Sesame" = "名前をつける";-->
+    <!--    "Give your Sesame a cooool name ! 😎" = "セサミにかっこいい名前をつけてあげてね！😎";-->
+    <!--    "Members" = "メンバー";-->
+    <!--    "Add Member" = "メンバーに追加";-->
+
+    <!--    "Edit Name" = "名前を変更";-->
+    <!--    "Delete Member" = "メンバーを削除";-->
+    <!--    "Pull to refresh" = "スクロールで更新";-->
+    <!--    "Scan this QR code to add me on your contact" = "QRコードをスキャンして連絡先へ追加してください";-->
+
+    <!--    "Enter Sesame name" = "名前未入力";-->
+    <!--    "Set Complete" = "設定完了";-->
+
+
+    <!--    // "DEVICE NOT FOUND" = "セサミが見つかりません";-->
+    <!--    // "User has not been yet confirmed. Please enter the verification code in order to complete confirmation." = "認証コードを入力してアカウントの認証行なってください。";-->
+    <!--    // "An account already exists with this email address." = "もう既にこのメールアドレスでアカウント登録済みです"-->
+
+
+
+
+

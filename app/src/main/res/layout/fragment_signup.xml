@@ -1,0 +1,240 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.candyhouse.app.tabs.account.login.LoginFragment">
+
+    <ImageView
+        android:id="@+id/backicon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:padding="12dp"
+        android:src="@drawable/ic_icons_filled_close" />
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/last_name"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+
+            <EditText
+                android:id="@+id/last_name_edt"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_edt"
+                android:drawablePadding="4dp"
+                android:gravity="start|center_vertical"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:singleLine="true"
+                android:text="" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/first_name"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+
+            <EditText
+                android:id="@+id/first_name_edt"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_edt"
+                android:drawablePadding="4dp"
+                android:gravity="start|center_vertical"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:singleLine="true"
+                android:text="" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/email"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+
+            <EditText
+
+                android:id="@+id/mail_edt"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/rounded_edt"
+                android:drawablePadding="4dp"
+                android:gravity="start|center_vertical"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:singleLine="true"
+                android:text="" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/password"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/password_edt"
+                android:layout_width="250dp"
+                android:layout_height="48dp"
+
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="48dp"
+                android:background="@drawable/rounded_edt"
+                android:drawablePadding="4dp"
+                android:gravity="start|center_vertical"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:singleLine="true"
+                android:text="" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/checkBtn"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/round_blue"
+            android:text="@string/sign_up"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/second_zone"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/password"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/confirm_edt"
+                    android:layout_width="250dp"
+                    android:layout_height="48dp"
+                    android:inputType="number"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="48dp"
+                    android:background="@drawable/rounded_edt"
+                    android:drawablePadding="4dp"
+                    android:gravity="start|center_vertical"
+                    android:maxLines="1"
+                    android:paddingLeft="12dp"
+                    android:singleLine="true"
+                    android:text="" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/confirmBtn"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/round_blue"
+                android:text="@string/verification"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/resendBtn"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/round_blue"
+                android:text="@string/re_send_verification_code"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/pBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="150dp"
+        android:indeterminate="false" />
+
+
+</RelativeLayout>
