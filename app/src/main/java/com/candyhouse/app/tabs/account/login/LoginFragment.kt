@@ -68,26 +68,15 @@ class LoginFragment : DialogFragment() {
         forget_password.setOnClickListener {
             ForgetPassWordFragment.newInstance().show(activity!!.supportFragmentManager, "")
         }
-        val mLoginCallback: AWSCognitoOAuthService.LoginResult =
-                object : AWSCognitoOAuthService.LoginResult {
-                    override fun onSuccess(v: String?) {
-                        CHAccountManager.setupLoginSession(AWSCognitoOAuthService)
-                        DeviceListFG.instance?.refleshPage()
-                        (activity as MainActivity).refreshFriend()
-                        this@LoginFragment.dismiss()
-                    }
 
-                    override fun onError(exception: Exception) {
-                        Toast.makeText(
-                                activity,
-                                exception.localizedMessage,
-                                Toast.LENGTH_LONG
-                        ).show()
-                        pBar.visibility = View.GONE
-
-                    }
-                }
         loginBtn.setOnClickListener {
+
+            if (nameEdt.text.isEmpty()) {
+                return@setOnClickListener
+            }
+            if (passwordEdt.text.isEmpty()) {
+                return@setOnClickListener
+            }
             if (pBar.isShown) {
                 return@setOnClickListener
             }
@@ -95,30 +84,36 @@ class LoginFragment : DialogFragment() {
             AWSCognitoOAuthService.loginWithUsernamePassword(
                     nameEdt.text.toString().toMail(),
                     passwordEdt.text.toString(),
-                    mLoginCallback
+                    object : AWSCognitoOAuthService.LoginResult {
+                        override fun onSuccess(v: String?) {
+                            CHAccountManager.setupLoginSession(AWSCognitoOAuthService)
+                            DeviceListFG.instance?.refleshPage()
+                            (activity as MainActivity).refreshFriend()
+                            this@LoginFragment.dismiss()
+                        }
+
+                        override fun onError(exception: Exception) {
+                            Toast.makeText(
+                                    activity,
+                                    exception.localizedMessage,
+                                    Toast.LENGTH_LONG
+                            ).show()
+                            pBar.visibility = View.GONE
+
+                        }
+                    }
             )
         }
         tsetest.setOnClickListener {
-            if (pBar.isShown) {
-                return@setOnClickListener
-            }
-            pBar.visibility = View.VISIBLE
-            AWSCognitoOAuthService.loginWithUsernamePassword(
-                    "tse@candyhouse.co".toMail(),
-                    "111111",
-                    mLoginCallback
-            )
+            nameEdt.setText("tse@candyhouse.co")
+            passwordEdt.setText("111111")
+            loginBtn.performClick()
+
         }
         jmingtest.setOnClickListener {
-            if (pBar.isShown) {
-                return@setOnClickListener
-            }
-            pBar.visibility = View.VISIBLE
-            AWSCognitoOAuthService.loginWithUsernamePassword(
-                    "@candyhouse.co",
-                    "",
-                    mLoginCallback
-            )
+            nameEdt.setText("tse+5@candyhouse.co")
+            passwordEdt.setText("111111")
+            loginBtn.performClick()
         }
     }
 
@@ -147,7 +142,6 @@ class LoginFragment : DialogFragment() {
 
 
 fun String.toMail(): String {
-//    L.d("hcia", "toItemCode:" + this)
     val ss = this.toLowerCase().replace(" ", "").replace(" ", "").replace("\n", "")
     return ss
 }

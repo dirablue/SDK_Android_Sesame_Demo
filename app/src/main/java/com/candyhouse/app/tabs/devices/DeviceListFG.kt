@@ -251,7 +251,9 @@ class DeviceListFG : BaseFG() {
     }
 
     fun refleshPage() {
-
+        runOnUiThread {
+            swiperefreshView.isRefreshing = true
+        }
         CHAccountManager.flushDevices() { result ->
             result.onSuccess {
                 L.d("hcia", "UI it:" + it)

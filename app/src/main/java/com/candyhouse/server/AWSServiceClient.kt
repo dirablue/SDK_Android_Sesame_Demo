@@ -24,6 +24,7 @@ val cognitoIdentityUserPoolAppClientSecret = "1k1ni8bnjifjpsl2pg9n2061ln7ja1hdan
 val identityProviderCognito = "cognito-idp.us-east-1.amazonaws.com/us-east-1_69JF5fktv"
 val regin = Regions.US_EAST_1
 
+
 object AWSCognitoOAuthService : CHLoginProvider {
     var nameChange: NameChange? = null
 

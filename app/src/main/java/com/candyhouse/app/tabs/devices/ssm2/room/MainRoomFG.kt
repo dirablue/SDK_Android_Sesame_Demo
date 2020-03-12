@@ -73,18 +73,16 @@ class MainRoomFG : BaseNFG() {
     }
 
     private fun refleshUIList(lists: List<HistoryAndOperater>) {
-//        L.d("hcia", "UI準備開始重組刷新歷史拉！！:" + lists.size)
         if (lists.size == 0) {
             return
         }
-
+//        2020-03-04T06:16:13+00:00
         val mTestGoupHistory = lists.groupBy {
-            SimpleDateFormat("yyyy/MM/dd").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX").parse(it.history.timestamp))
+            SimpleDateFormat("yyyy/MM/dd").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(it.history.timestamp))
         }
         val testGList = mTestGoupHistory.toList()
         val ssss = arrayListOf<Pair<String, List<HistoryAndOperater>>>()
         ssss.addAll(testGList)
-//                testGList = testGList as ArrayList
         ssss.sortBy {
             SimpleDateFormat("yyyy/MM/dd").parse(it.first)
         }.apply {
@@ -98,7 +96,6 @@ class MainRoomFG : BaseNFG() {
                 }
             })
         }
-//        }
     }
 
     override fun onResume() {
@@ -119,19 +116,8 @@ class MainRoomFG : BaseNFG() {
                 if (device.bleIdStr == ssm?.bleIdStr) {
                     L.d("hcia", "更新設備 evice.bleIdStr :" + device.bleIdStr)
 
+                    device.delegate = ssm?.delegate
                     ssm = device
-                    ssm?.delegate = object : CHSesameBleDeviceDelegate {
-                        override fun onBleDeviceStatusChanged(device: CHSesameBleInterface, status: CHDeviceStatus) {
-                            toggle?.setBackgroundResource(ssmUIParcer(device))
-                        }
-
-                        override fun onBleCommandResult(device: CHSesameBleInterface, cmd: SSM2ItemCode, result: SSM2CmdResultCode) {
-                            super.onBleCommandResult(device, cmd, result)
-                            if (cmd == SSM2ItemCode.history && result == SSM2CmdResultCode.success) {
-                                refleshHistory()
-                            }
-                        }
-                    }
                     ssm?.connnect()
                     return
                 }

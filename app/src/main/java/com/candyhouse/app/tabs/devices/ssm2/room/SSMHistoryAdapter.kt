@@ -74,7 +74,7 @@ class SSMHistoryAdapter(var mTestGList: ArrayList<Pair<String, List<HistoryAndOp
         }
 
 
-        val time = SimpleDateFormat("HH:mm:ss a").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX").parse(history.timestamp))
+        val time = SimpleDateFormat("HH:mm:ss a").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(history.timestamp))
         ivh.time.text = time
         ivh.locktype.setImageResource(if (history.locker) R.drawable.icon_lock else R.drawable.icon_unlock)
 
