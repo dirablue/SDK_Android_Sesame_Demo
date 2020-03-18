@@ -25,6 +25,7 @@ import com.candyhouse.utils.L
 import kotlinx.android.synthetic.main.fg_room_main.*
 import org.zakariya.stickyheaders.StickyHeaderLayoutManager
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 @ExperimentalUnsignedTypes
@@ -45,8 +46,9 @@ class MainRoomFG : BaseNFG() {
         backicon.setOnClickListener { findNavController().navigateUp() }
         title.text = ssm!!.customNickname
         room_list.layoutManager = StickyHeaderLayoutManager()
-        toggle.setBackgroundResource(ssmUIParcer(ssm!!))
-        toggle.setOnClickListener { ssm?.toggle() }
+//        toggle.setBackgroundResource(ssmUIParcer(ssm!!))
+        ssmView.setLock(ssm!!)
+        ssmView.setOnClickListener { ssm?.toggle() }
         right_icon.setOnClickListener {
             SSM2SettingFG.ssm = ssm
             findNavController().navigate(R.id.action_mainRoomFG_to_SSM2SettingFG)
@@ -76,15 +78,15 @@ class MainRoomFG : BaseNFG() {
         if (lists.size == 0) {
             return
         }
-//        2020-03-04T06:16:13+00:00
+
         val mTestGoupHistory = lists.groupBy {
-            SimpleDateFormat("yyyy/MM/dd").format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(it.history.timestamp))
+            groupTZ().format(showTZ().parse(it.history.timestamp))
         }
         val testGList = mTestGoupHistory.toList()
         val ssss = arrayListOf<Pair<String, List<HistoryAndOperater>>>()
         ssss.addAll(testGList)
         ssss.sortBy {
-            SimpleDateFormat("yyyy/MM/dd").parse(it.first)
+            groupTZ().parse(it.first)
         }.apply {
             runOnUiThread(Runnable {
                 room_list?.adapter = SSMHistoryAdapter(ssss)
@@ -102,7 +104,7 @@ class MainRoomFG : BaseNFG() {
         super.onResume()
         ssm?.delegate = object : CHSesameBleDeviceDelegate {
             override fun onBleDeviceStatusChanged(device: CHSesameBleInterface, status: CHDeviceStatus) {
-                toggle?.setBackgroundResource(ssmUIParcer(device))
+                ssmView?.setLock(ssm!!)
             }
 
             override fun onBleCommandResult(device: CHSesameBleInterface, cmd: SSM2ItemCode, result: SSM2CmdResultCode) {

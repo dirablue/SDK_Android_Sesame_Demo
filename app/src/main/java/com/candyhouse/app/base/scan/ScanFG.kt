@@ -51,7 +51,7 @@ class ScanFG : Fragment(), ZXingScannerView.ResultHandler, EasyPermissions.Permi
 
     override fun onPause() {
         super.onPause()
-        (activity as MainActivity).showMenu()
+//        (activity as MainActivity).showMenu()
 
         L.d("hcia", "mScannerView:" + mScannerView)
         mScannerView!!.stopCamera()

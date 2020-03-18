@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.candyhouse.R
-import com.candyhouse.app.base.BaseNFG
+import com.candyhouse.app.base.BaseFG
 import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.app.tabs.devices.ssm2.room.avatatImagGenaroter
 import com.candyhouse.sesame.ble.CHSesameBleInterface
@@ -27,7 +27,7 @@ import com.utils.alertview.enums.AlertActionStyle
 import com.utils.alertview.enums.AlertStyle
 import kotlinx.android.synthetic.main.fg_delete_member.*
 
-class DeleteMemberFG : BaseNFG() {
+class DeleteMemberFG : BaseFG() {
     var memberList = ArrayList<CHMemberAndOperater>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,7 +61,7 @@ class DeleteMemberFG : BaseNFG() {
                             avatar.setImageDrawable(avatatImagGenaroter(data.opetator?.firstname))
                             itemView.setOnClickListener {
                                 val alert = AlertView(data.opetator!!.name, "", AlertStyle.IOS)
-                                alert.addAction(AlertAction("delete", AlertActionStyle.NEGATIVE) { action ->
+                                alert.addAction(AlertAction(getString(R.string.delete_member), AlertActionStyle.NEGATIVE) { action ->
                                     ssm?.revokeKeyfromMember(data.member) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: Any? ->
                                         L.d("hcia", "刪除成功:" + cmd)
                                         refleshPage()

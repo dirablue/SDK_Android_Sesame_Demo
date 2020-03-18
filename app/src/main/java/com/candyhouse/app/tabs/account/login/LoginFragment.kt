@@ -20,8 +20,6 @@ import com.candyhouse.utils.L
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
-//todo
-//  forgetpassword
 class LoginFragment : DialogFragment() {
 
     override fun onStart() {

@@ -57,7 +57,9 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/text_hint"
+        android:textSize="11dp"
         android:gravity="center"
         android:text="name" />
 

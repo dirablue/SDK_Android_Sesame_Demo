@@ -16,7 +16,6 @@
 
 package com.candyhouse.app.tabs.friends
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -153,7 +152,7 @@ class FriendsFG : Fragment() {
     }
 
     fun refleshPage() {
-        CHAccountManager.meyFriends {
+        CHAccountManager.myFriends {
             it.onSuccess {
                 recyclerView.post {
                     mFriends.clear()

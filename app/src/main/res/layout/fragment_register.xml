@@ -10,31 +10,15 @@
     tools:context="com.candyhouse.app.tabs.account.MeFG"
     tools:layout_editor_absoluteY="81dp">
 
+
     <TextView
         android:id="@+id/family_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="34dp"
-        android:text="family_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-
-    <TextView
-        android:id="@+id/given_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="given_name"
+        android:text="family_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -45,6 +29,25 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
+        android:id="@+id/given_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="34dp"
+        android:text="given_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+
+
+
+    <TextView
         android:id="@+id/mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,8 +56,8 @@
         android:textSize="18sp"
         android:layout_marginTop="20dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/given_name"
-        app:layout_constraintTop_toBottomOf="@+id/given_name"
+        app:layout_constraintStart_toStartOf="@+id/family_name"
+        app:layout_constraintTop_toBottomOf="@+id/family_name"
         />
 
     <Button

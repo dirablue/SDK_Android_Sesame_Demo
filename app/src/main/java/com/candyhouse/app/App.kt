@@ -12,6 +12,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.candyhouse.R
 import com.candyhouse.app.tabs.MainActivity
+import com.candyhouse.app.tabs.devices.ssm2.room.getTZ
+import com.candyhouse.app.tabs.devices.ssm2.room.showTZ
 import com.candyhouse.sesame.ble.CHBleManager
 import com.candyhouse.sesame.ble.CHBleManagerDelegate
 import com.candyhouse.sesame.ble.CHDeviceStatus
@@ -20,6 +22,8 @@ import com.candyhouse.sesame.ble.Sesame2.CHSesameBleDeviceDelegate
 import com.candyhouse.utils.L
 import java.io.File
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @ExperimentalUnsignedTypes
@@ -40,7 +44,7 @@ class MyApp : Application(), CHBleManagerDelegate, CHSesameBleDeviceDelegate {
 //        ForegroundService.startService(this, "sesame")
     }
 
-
+    //todo Widget
     fun showWidget(device: CHSesameBleInterface) {
         val channelID = "channel_id"
         val notificationManager: NotificationManager =

@@ -16,4 +16,5 @@ open class BaseAC : AppCompatActivity() {
 //        CHBleManager.disableScan()
     }
 
+
 }

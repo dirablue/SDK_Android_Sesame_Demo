@@ -1,19 +1,14 @@
 package com.candyhouse.app.tabs.devices.ssm2.setting
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -252,9 +247,17 @@ class SSM2SettingFG : BaseNFG() {
                 }
             }
         }
+        /**
+         * todo
+         *  java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.widget.Switch.post(java.lang.Runnable)' on a null object reference
+        at com.candyhouse.app.tabs.devices.ssm2.setting.SSM2SettingFG$onViewCreated$2.invoke(SSM2SettingFG.kt:235)
+        at com.candyhouse.app.tabs.devices.ssm2.setting.SSM2SettingFG$onViewCreated$2.invoke(SSM2SettingFG.kt:57)
+        at com.candyhouse.sesame.ble.Sesame2.Sesame2BleDevice$getAutolockSetting$1$1.run(Sesame2BleDevice.kt:138)
+         *
+        * */
         ssm?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
             firmwareVersion.post {
-                firmwareVersion.text = tag_ts?.first
+                firmwareVersion?.text = tag_ts?.first
             }
         }
         backicon.setOnClickListener { findNavController().navigateUp() }
@@ -281,9 +284,8 @@ class SSM2SettingFG : BaseNFG() {
             }?.show()
         }
         delete_zone.setOnClickListener {
-
-            val alert = AlertView("unsesame", "", AlertStyle.IOS)
-            alert.addAction(AlertAction("unsesame", AlertActionStyle.NEGATIVE) { action ->
+            val alert = AlertView(getString(R.string.ssm_delete), "", AlertStyle.IOS)
+            alert.addAction(AlertAction(getString(R.string.ssm_delete), AlertActionStyle.NEGATIVE) { action ->
                 ssm?.unregister()
                 ssm?.unregisterServer {
                     it.onSuccess {

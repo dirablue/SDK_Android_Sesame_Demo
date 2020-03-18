@@ -164,6 +164,10 @@ class MeFG : BaseFG() {
 
     }
 
+    /**
+     * given_name 名
+     * family_name 姓
+    * */
     private fun setName() {
 
         this@MeFG.family_name?.text = SharedPreferencesUtils.family_name

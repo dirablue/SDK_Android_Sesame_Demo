@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
 import com.candyhouse.R
+import com.candyhouse.app.base.BaseFG
 import com.candyhouse.app.base.BaseNFG
 import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.app.tabs.devices.ssm2.room.avatatImagGenaroter
@@ -31,7 +32,7 @@ import kotlinx.android.synthetic.main.fg_add_member.*
 import java.util.ArrayList
 
 
-class AddMemberFG : BaseNFG() {
+class AddMemberFG : BaseFG() {
     val mFriends = ArrayList<UserProfile>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,7 +45,7 @@ class AddMemberFG : BaseNFG() {
         swiperefresh.apply {
             setOnRefreshListener { refleshPage() }
         }
-
+// todo loading progress
         recy.apply {
             setHasFixedSize(true)
             adapter = object : GenericAdapter<UserProfile>(mFriends) {
@@ -59,13 +60,17 @@ class AddMemberFG : BaseNFG() {
 
                         @SuppressLint("SetTextI18n")
                         override fun bind(data: UserProfile, pos: Int) {
-//                            data.
                             customName.text = data.nickname
                             itemView.setOnClickListener {
-                                val alert = AlertView(data.nickname,"", AlertStyle.IOS)
-                                alert.addAction(AlertAction("share", AlertActionStyle.NEGATIVE) { action ->
+                                val alert = AlertView(data.nickname, "", AlertStyle.IOS)
+                                alert.addAction(AlertAction(getString(R.string.add_member), AlertActionStyle.NEGATIVE) { action ->
                                     ssm?.addKeyByFriend(CHAccessLevel.MANAGER, data.id) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: Any? ->
                                         L.d("hcia", "外部成功")
+
+                                        itemView?.post {
+                                            findNavController().navigateUp()
+                                        }
+
                                     }
                                 })
                                 alert.show(MainActivity.activity as AppCompatActivity)
@@ -85,7 +90,8 @@ class AddMemberFG : BaseNFG() {
     }
 
     fun refleshPage() {
-        CHAccountManager.meyFriends {
+
+        CHAccountManager.myFriends {
             it.onSuccess {
                 recy.post {
                     mFriends.clear()

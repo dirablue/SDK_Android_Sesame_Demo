@@ -49,9 +49,8 @@
             android:src="@drawable/avatar_1_raster" />
 
         <TextView
-            android:id="@+id/given_name"
+            android:id="@+id/family_name"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_gravity="start|center_vertical"
@@ -63,15 +62,14 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/family_name"
-
+            android:id="@+id/given_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_gravity="start|center_vertical"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/given_name"
+            android:layout_toRightOf="@+id/family_name"
             android:text="-"
             android:textColor="@color/black"
             android:textSize="20dp"

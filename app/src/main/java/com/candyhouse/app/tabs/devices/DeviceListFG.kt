@@ -25,6 +25,7 @@ import com.candyhouse.app.tabs.devices.ssm2.test.BlueSesameControlActivity
 import com.candyhouse.app.tabs.menu.BarMenuItem
 import com.candyhouse.app.tabs.menu.CustomAdapter
 import com.candyhouse.app.tabs.menu.ItemUtils
+import com.candyhouse.sesame.BuildConfig
 import com.candyhouse.sesame.ble.*
 import com.candyhouse.sesame.ble.Sesame2.CHSesameBleDeviceDelegate
 import com.candyhouse.sesame.deviceprotocol.CHBatteryStatus
@@ -189,7 +190,7 @@ class DeviceListFG : BaseFG() {
                             battery.visibility = if (sesame.mechStatus == null) View.GONE else View.VISIBLE
                             customName.text = sesame.customNickname
                             ownerName.text = sesame.ownName
-                            ownerName.visibility = if (sesame.accessLevel == CHDeviceAccessLevel.owner) View.GONE else View.VISIBLE
+                            ownerName.visibility = if (sesame.ownName == sesame.customNickname) View.GONE else View.VISIBLE
                             toggle.setOnClickListener { sesame.toggle() }
                             toggle.setBackgroundResource(ssmUIParcer(sesame))
                             testICon.visibility = if (testSwich.isChecked) View.VISIBLE else View.GONE
@@ -208,15 +209,7 @@ class DeviceListFG : BaseFG() {
 
                             }
 
-                            //todo kill test
-//                            if (sesame.customNickname == "E8:D5:01:97:10:7E") {
-//                                if (SSM2SetAngleFG.ssm == null) {
-////                                    MainRoomFG.ssm = sesame
-////                                    DeviceListFG@ findNavController().navigate(R.id.action_deviceListPG_to_mainRoomFG)
-//                                    SSM2SetAngleFG.ssm = sesame
-//                                    findNavController().navigate(R.id.action_deviceListPG_to_SSM2SetAngleFG)
-//                                }
-//                            }
+
 
                         }
                     }
@@ -236,8 +229,12 @@ class DeviceListFG : BaseFG() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        testSwich.isChecked = true//todo kill test
-        CHBleManager.discoverALLDevices() {
+        testSwich.isChecked = true
+        if(BuildConfig.BUILD_TYPE == "debug"){
+            testSwich.visibility = View.VISIBLE
+        }
+
+            CHBleManager.discoverALLDevices() {
             deviceMap.clear()
             mDeviceList.clear()
             it.forEach {
@@ -250,6 +247,7 @@ class DeviceListFG : BaseFG() {
         }
     }
 
+    //todo ui sync fail
     fun refleshPage() {
         runOnUiThread {
             swiperefreshView.isRefreshing = true

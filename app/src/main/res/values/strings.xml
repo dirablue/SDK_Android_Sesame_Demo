@@ -38,7 +38,6 @@
     <string name="qrhint">Scan this QR code to add me on your contact</string>
     <string name="change_sesame_name">Change Sesame Name</string>
     <string name="change_sesame_angle">Configure Angles</string>
-    <string name="edit_name">Edit Name</string>
     <string name="ssm_update">SesameOS Update</string>
     <string name="autolock">autolock</string>
     <string name="ssm_delete">Delete this Sesame</string>
@@ -57,5 +56,9 @@
     <string name="set_lock_position">Set Lock Position</string>
     <string name="set_unlock_position">Set Unlock Position</string>
     <string name="second">sec</string>
-
+    <string name="delete_member">Delete Member</string>
+    <string name="add_member">Add Member</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="manua_lock">manualLock</string>
+    <string name="manua_unlock">manualUnlock</string>
 </resources>

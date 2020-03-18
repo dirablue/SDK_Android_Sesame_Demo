@@ -160,13 +160,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     }
 
-//    fun refreshDevicePageList() {
-//        val firstTab = supportFragmentManager.findFragmentByTag("bottomNavigation#0") as NavHostFragment
-//        L.d("hcia", "頁面堆疊:" + firstTab.childFragmentManager.fragments)
-//        val mDevicesFG = firstTab.childFragmentManager.fragments.get(0) as? DeviceListFG
-//        L.d("hcia", " 找列表頁面 mDevicesFG:" + mDevicesFG)
-//        mDevicesFG?.refleshPage()
-//    }
 
     fun refreshFriend() {
         val firstTab = supportFragmentManager.findFragmentByTag("bottomNavigation#1") as NavHostFragment
@@ -204,9 +197,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         })
         currentNavController = controller
 
-        //todo romove test tab
-//        val view = findViewById<View>(R.id.home)
-//        view.postDelayed({ view.performClick() }, 1000)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -253,6 +243,5 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     fun hideProgress() {
         pBar.visibility = View.GONE
-
     }
 }

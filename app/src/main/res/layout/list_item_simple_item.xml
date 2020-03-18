@@ -52,8 +52,8 @@
 
     <ImageView
         android:id="@+id/locktype"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:scaleType="fitXY"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

@@ -37,7 +37,6 @@
     <string name="Sesame">セサミ</string>
     <string name="title_friends">連絡先</string>
     <string name="change_sesame_name">セサミの名前を変更</string>
-    <string name="edit_name">名前を変更</string>
     <string name="qrhint">QRコードをスキャンして連絡先へ追加してください</string>
     <string name="change_sesame_angle">角度の設定</string>
     <string name="ssm_update">SesameOSをアップデート</string>
@@ -57,7 +56,11 @@
     <string name="set_lock_position">施錠の角度を設定</string>
     <string name="set_unlock_position">解錠の角度を設定</string>
     <string name="second">秒後</string>
-
+    <string name="delete_member">メンバーを削除</string>
+    <string name="add_member">メンバーに追加</string>
+    <string name="edit_name">名前を変更</string>
+    <string name="manua_lock">手動施錠</string>
+    <string name="manua_unlock">手動施錠</string>
 
 
 </resources>
@@ -69,11 +72,9 @@
     <!--    "Delete this Sesame" = "セサミを削除";-->
     <!--    "autolock" = "オートロック";-->
     <!--    "manualOperated" = "サムターンに動きあり";-->
-    <!--    "manualLock" = "手動施錠";-->
-    <!--    "manualUnlock" = "手動解錠";-->
+
     <!--    "Set Lock Position" = "施錠の角度を設定";-->
     <!--    "Set Unlock Position" = "解錠の角度を設定";-->
-    <!--    "Change Sesame Name" = "セサミの名前を変更";-->
     <!--    "sesame_2" = "セサミ2";-->
     <!--    "Verification code" = "認証";-->
     <!--    "Verification" = "認証する";-->
@@ -102,10 +103,7 @@
     <!--    "Assign Name to Sesame" = "名前をつける";-->
     <!--    "Give your Sesame a cooool name ! 😎" = "セサミにかっこいい名前をつけてあげてね！😎";-->
     <!--    "Members" = "メンバー";-->
-    <!--    "Add Member" = "メンバーに追加";-->
 
-    <!--    "Edit Name" = "名前を変更";-->
-    <!--    "Delete Member" = "メンバーを削除";-->
     <!--    "Pull to refresh" = "スクロールで更新";-->
     <!--    "Scan this QR code to add me on your contact" = "QRコードをスキャンして連絡先へ追加してください";-->
 
