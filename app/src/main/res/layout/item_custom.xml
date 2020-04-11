@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:background="?attr/selectableItemBackground"
-  android:orientation="horizontal"
-  android:paddingLeft="5dp"
-  android:paddingRight="5dp"
-  android:paddingBottom="5dp"
-  android:layout_marginBottom="8dp">
-
-  <ImageView
-    android:id="@+id/item_custom_icon"
-    android:layout_width="28dp"
-    android:layout_height="28dp"
-    android:layout_gravity="center_vertical"
-    android:layout_marginEnd="8dp"
-    android:layout_marginRight="8dp"
-    tools:src="@tools:sample/avatars" />
-
-  <TextView
-    android:id="@+id/item_custom_title"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/menu_select"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical"
-    android:layout_marginStart="10dp"
-    android:layout_marginLeft="10dp"
-    android:textColor="@color/white"
-    android:textSize="15sp"
-    android:textStyle="bold"
-    tools:text="@tools:sample/full_names"
-      />
-</LinearLayout>
+    android:orientation="horizontal"
+    android:paddingTop="18dp"
+    android:paddingBottom="18dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        >
+
+        <ImageView
+            android:id="@+id/item_custom_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/item_custom_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/item_custom_icon"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            tools:text="@tools:sample/full_names" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

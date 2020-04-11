@@ -41,8 +41,8 @@
 
             <EditText
                 android:id="@+id/last_name_edt"
-                android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_width="210dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="4dp"
@@ -51,6 +51,7 @@
                 android:gravity="start|center_vertical"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:textSize="14sp"
                 android:paddingLeft="12dp"
                 android:singleLine="true"
                 android:text="" />
@@ -74,9 +75,11 @@
 
 
             <EditText
+                android:textSize="14sp"
+
                 android:id="@+id/first_name_edt"
-                android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_width="210dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="4dp"
@@ -109,8 +112,8 @@
             <EditText
 
                 android:id="@+id/mail_edt"
-                android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_width="210dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/rounded_edt"
@@ -118,6 +121,8 @@
                 android:gravity="start|center_vertical"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:textSize="14sp"
+
                 android:paddingLeft="12dp"
                 android:singleLine="true"
                 android:text="" />
@@ -141,8 +146,9 @@
 
             <EditText
                 android:id="@+id/password_edt"
-                android:layout_width="250dp"
-                android:layout_height="48dp"
+                android:layout_width="210dp"
+                android:layout_height="32dp"
+                android:textSize="14sp"
 
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -160,15 +166,16 @@
         <Button
             android:id="@+id/checkBtn"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="32dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/round_blue"
             android:text="@string/sign_up"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
 
         <LinearLayout
-            android:visibility="invisible"
             android:id="@+id/second_zone"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -182,15 +189,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="@string/password"
+                    android:text="@string/verification_code"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/confirm_edt"
-                    android:layout_width="250dp"
-                    android:layout_height="48dp"
+                    android:layout_width="210dp"
+                    android:layout_height="32dp"
                     android:inputType="number"
+                    android:textSize="14sp"
 
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
@@ -208,7 +216,8 @@
             <Button
                 android:id="@+id/confirmBtn"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="32dp"
+                android:textAllCaps="false"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/round_blue"
                 android:text="@string/verification"
@@ -216,8 +225,9 @@
 
             <Button
                 android:id="@+id/resendBtn"
+                android:textAllCaps="false"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="32dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/round_blue"
                 android:text="@string/re_send_verification_code"

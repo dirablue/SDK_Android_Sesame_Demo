@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.amulyakhare.textdrawable.TextDrawable
-import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.candyhouse.R
 import com.candyhouse.sesame.db.Model.HistoryAndOperater
 import com.candyhouse.utils.L
+import com.utils.textdrawable.TextDrawable
+import com.utils.textdrawable.util.ColorGenerator
 import org.zakariya.stickyheaders.SectioningAdapter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,54 +70,60 @@ class SSMHistoryAdapter(var mTestGList: ArrayList<Pair<String, List<HistoryAndOp
         ivh.name.text = operator?.name ?: when (history.event) {
             "manual-operated" -> MainRoomFG.instance?.getString(R.string.manual_operated)
             "auto-lock" -> MainRoomFG.instance?.getString(R.string.autolock)
-            "manual-lock" ->( if (history.locker) MainRoomFG.instance?.getString(R.string.manua_lock) else MainRoomFG.instance?.getString(R.string.manua_unlock) )
+            "manual-lock" -> (if (history.locker) MainRoomFG.instance?.getString(R.string.manua_lock) else MainRoomFG.instance?.getString(R.string.manua_unlock))
             else -> history.event
         }
 
         val time = getTZ().format(showTZ().parse(history.timestamp))
         ivh.time.text = time
-        ivh.locktype.setImageResource(if (history.locker) R.drawable.ic_icon_locked else R.drawable.ic_icon_unlocked)
+        ivh.head.setImageResource(if (history.locker) R.drawable.ic_icon_locked else R.drawable.ic_icon_unlocked)
 
 
-        if (history.event == "lock") {
-            ivh.head.setImageDrawable(avatatImagGenaroter(operator?.firstname))
-        } else {
-            ivh.head.setImageResource(
-                    when (history.event) {
-                        "manual-operated" -> R.drawable.ic_handmove
-                        "manual-lock" -> R.drawable.ic_handmove
-                        else -> R.drawable.ic_autolock
-                    }
-            )
-        }
+//        if (history.event == "lock") {
+//            ivh.head.setImageDrawable(avatatImagGenaroter(operator?.firstname))
+//        } else {
+//            ivh.head.setImageResource(
+//                    when (history.event) {
+//                        "manual-operated" -> R.drawable.ic_handmove
+//                        "manual-lock" -> R.drawable.ic_handmove
+//                        else -> R.drawable.ic_autolock
+//                    }
+//            )
+//        }
     }
 
 
 }
 
-fun avatatImagGenaroter(name: String?): TextDrawable? {
+fun avatatImagGenaroter(name: String? = "NA"): TextDrawable? {
+    //todo cut
+
+    val na = name ?: "NA"
+    val ts = if (na.length == 1) 60 else 38
     val drawable = TextDrawable.Builder()
-            .setColor(ColorGenerator.DEFAULT.getColor(name ?: "NA"))
+            .setColor(ColorGenerator.DEFAULT.getColorByIndex(na.firstOrNull()?.toInt()))
             .setShape(TextDrawable.SHAPE_ROUND)
-            .setText(name ?: "NA")
+            .setText(na)
+            .setFontSize(ts)
             .build()
     return drawable
 }
 
-fun getTZ():SimpleDateFormat{
+fun getTZ(): SimpleDateFormat {
+    val sd = SimpleDateFormat("HH:mm:ss a", Locale.getDefault())
+    return sd
+}
 
-  val  sd =   SimpleDateFormat("HH:mm:ss a",Locale.getDefault())
+fun showTZ(): SimpleDateFormat {
+
+    val sd = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault())
 
     return sd
 }
-fun showTZ():SimpleDateFormat{
 
-    val  sd =   SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.getDefault())
+fun groupTZ(): SimpleDateFormat {
 
-    return sd
-}fun groupTZ():SimpleDateFormat{
-
-    val  sd =   SimpleDateFormat("yyyy/MM/dd",Locale.getDefault())
+    val sd = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
     return sd
 }

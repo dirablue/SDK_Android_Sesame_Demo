@@ -13,12 +13,12 @@
     <color name="gray3">#666666</color>
     <color name="gray4">#333333</color>
     <color name="blue">#0000ff</color>
-    <color name="text_hint">#999999</color>
+    <color name="text_hint">#cccccc</color>
 
     <color name="clear">#00000000</color>
     <color name="title">#000000</color>
     <color name="statusbg">#eeeeee</color>
-    <color name="menu_bg">#666666</color>
+    <color name="menu_bg">#444444</color>
     <color name="cancel_btn_bg_color">#D0D0D0</color>
     <color name="cancel_btn_bg_pressed_color">#B6B6B6</color>
 
@@ -36,5 +36,7 @@
     <color name="lightWhite">#F5F5F5</color>
     <color name="lock_red">#cc4a44</color>
     <color name="unlock_blue">#28aeb1</color>
-
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_laser">#28aeb1</color>
+    <color name="viewfinder_border">#28aeb1</color>
 </resources>

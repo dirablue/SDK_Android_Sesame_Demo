@@ -11,7 +11,8 @@
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/statusbg">
+        android:background="@color/white"
+        >
 
         <RelativeLayout
             android:id="@+id/right_icon"
@@ -46,7 +47,7 @@
             android:layout_centerVertical="true"
 
             android:layout_marginLeft="12dp"
-            android:src="@drawable/avatar_1_raster" />
+            />
 
         <TextView
             android:id="@+id/family_name"
@@ -102,30 +103,29 @@
 
     <RelativeLayout
         android:id="@+id/change_name_zone"
-
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:layout_below="@+id/name_zone"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="16dp"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:text="@string/edit_name"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </RelativeLayout>
 
 
     <TextView
         android:id="@+id/signup_btn"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
@@ -133,5 +133,5 @@
         android:gravity="center"
         android:text="@string/logout"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 </RelativeLayout>

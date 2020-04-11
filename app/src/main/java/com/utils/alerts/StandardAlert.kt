@@ -14,9 +14,9 @@ import pe.startapps.alerts.ext.InputType
 class StandardAlert(context: Context, val type: AlertType) : BaseAlert(context) {
 
     var titleText: String? = null
-    var contentText: String? = null
-    var iconResId: Int? = null
-    var hintText: String? = null
+    var lastName: String? = null
+    var firstName: String? = null
+    var topHinText: String? = null
     var inputType = InputType.Text
 
     private var cancelText: String? = null
@@ -38,18 +38,19 @@ class StandardAlert(context: Context, val type: AlertType) : BaseAlert(context) 
             AlertType.Normal -> btnConfirm.setBackgroundResource(R.drawable.bg_btn_confirm)
             AlertType.Warning -> btnConfirm.setBackgroundResource(R.drawable.bg_btn_warning)
             AlertType.InputText -> {
-                etInput.hint = hintText
+                etInput.setText(lastName)
                 etInput.inputType = inputType.value
-                etInput.visibility = View.VISIBLE
-            }
-            AlertType.Progress -> {
-                progressBar.visibility = View.VISIBLE
-                ivIcon.visibility = View.GONE
-                btnCancel.visibility = View.GONE
-                btnConfirm.visibility = View.GONE
+                etInput__2.visibility = View.GONE
+                hintl2.visibility = View.GONE
+                hintt2.visibility = View.GONE
+                hint_top.text = topHinText
+//                hint_top.visibility = View.GONE
             }
             AlertType.TwoEdit -> {
 //                etInput.hint = hintText
+                etInput.setText(lastName)
+                etInput__2.setText(firstName)
+
                 etInput.inputType = inputType.value
                 etInput__2.inputType = inputType.value
                 etInput.visibility = View.VISIBLE
@@ -66,13 +67,11 @@ class StandardAlert(context: Context, val type: AlertType) : BaseAlert(context) 
             tvTitle.visibility = View.VISIBLE
         }
 
-        contentText?.let {
-            tvContent.text = it
-            tvContent.visibility = View.VISIBLE
-        }
+//        contentText?.let {
+//        }
 
         cancelText?.let {
-            btnCancel.text = it
+//            btnCancel.text = it
             btnCancel.visibility = View.VISIBLE
             btnCancel.setOnClickListener {
                 mOnCancel?.invoke(this@StandardAlert) ?: this@StandardAlert.dismiss()
@@ -86,7 +85,6 @@ class StandardAlert(context: Context, val type: AlertType) : BaseAlert(context) 
 
                 when (type) {
                     AlertType.TwoEdit -> {
-                        L.d("hcia", "mOnConfirm:" + mOnConfirm)
                         if (etInput.text.isNullOrBlank() || etInput__2.text.isNullOrBlank()) {
                             val shake = AnimationUtils.loadAnimation(context, R.anim.shake)
                             etInput.startAnimation(shake)
@@ -110,10 +108,6 @@ class StandardAlert(context: Context, val type: AlertType) : BaseAlert(context) 
             }
         }
 
-        iconResId?.let {
-            ivIcon.setImageResource(it)
-            ivIcon.visibility = View.VISIBLE
-        }
 
     }
 

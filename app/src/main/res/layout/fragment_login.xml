@@ -26,7 +26,6 @@
             android:layout_width="183dp"
             android:layout_height="35dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
             android:src="@drawable/ic_loginsubhint" />
     </LinearLayout>
 
@@ -59,13 +58,14 @@
             <EditText
                 android:id="@+id/nameEdt"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/rounded_edt"
                 android:drawablePadding="4dp"
                 android:gravity="start|center_vertical"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
+                android:textSize="14sp"
                 android:paddingLeft="12dp"
                 android:singleLine="true"
                 android:text="" />
@@ -90,9 +90,11 @@
             <EditText
                 android:id="@+id/passwordEdt"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
                 android:background="@drawable/rounded_edt"
                 android:drawablePadding="4dp"
+                android:layout_marginTop="6dp"
+                android:textSize="14sp"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
                 android:paddingLeft="12dp"
@@ -175,6 +177,30 @@
             android:layout_marginLeft="10dp"
             android:background="@color/colorPrimary"
             android:text="Jming"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="normal" />
+        <Button
+
+            android:id="@+id/hootest"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:background="@color/colorPrimary"
+            android:text="樂"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="normal" />
+        <Button
+
+            android:id="@+id/peter3"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:background="@color/colorPrimary"
+            android:text="peter3"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="normal" />

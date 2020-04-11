@@ -2,6 +2,7 @@ package com.candyhouse.app.tabs
 
 import android.content.Intent
 import android.util.SparseArray
+import android.view.Window
 import androidx.core.util.forEach
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
@@ -10,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.candyhouse.R
+import com.candyhouse.utils.L
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 fun BottomNavigationView.setupWithNavController(
@@ -38,76 +40,78 @@ fun BottomNavigationView.setupWithNavController(
             selectedNavController.value = navHostFragment.navController
         }
 
-        graphIdToTagMap[graphId] = fragmentTag // Save to the map
-
-        // L.d("hcia", "this.selectedItemId:" + this.selectedItemId+" graphId:"+graphId +" navHostFragment"+navHostFragment)
-
+        graphIdToTagMap[graphId] = fragmentTag
         attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
 
-
         if (this.selectedItemId == graphId) {
-            // Update livedata with the selected graph
             showNavHostFragment(fragmentManager, navHostFragment)
         } else {
-//            hide(fragmentManager.findFragmentByTag(navHostFragment)!!)
             hideNavHostFragment(fragmentManager, navHostFragment)
         }
-
     }
 
     var selectedItemTag = graphIdToTagMap[this.selectedItemId]
     val firstFragmentTag = graphIdToTagMap[firstFragmentGraphId]
     var isOnFirstFragment = selectedItemTag == firstFragmentTag
 
-    setOnNavigationItemSelectedListener { item ->
-        //        L.d("hcia", "item:" + item)
-        // Don't do anything if the state is state has already been saved.
-        if (fragmentManager.isStateSaved) {
-            false
-        } else {
-            val newlySelectedItemTag = graphIdToTagMap[item.itemId]
-            if (selectedItemTag != newlySelectedItemTag) {
-                // Pop everything above the first fragment (the "fixed start destination")
-                fragmentManager.popBackStack(firstFragmentTag,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
-                        as NavHostFragment
+    MainActivity.activity?.getWindow()?.statusBarColor = resources.getColor(R.color.gray0)
 
-                // Exclude the first fragment tag because it's always in the back stack.
-                if (firstFragmentTag != newlySelectedItemTag) {
-                    // Commit a transaction that cleans the back stack and adds the first fragment
-                    // to it, creating the fixed started destination.
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(
-                                    R.anim.nav_default_enter_anim,
-                                    R.anim.nav_default_exit_anim,
-                                    R.anim.nav_default_pop_enter_anim,
-                                    R.anim.nav_default_pop_exit_anim)
-                            .show(selectedFragment)
-//                        .attach(selectedFragment)
-                            .setPrimaryNavigationFragment(selectedFragment)
-                            .apply {
-                                // Detach all other Fragments
-                                graphIdToTagMap.forEach { _, fragmentTagIter ->
-                                    if (fragmentTagIter != newlySelectedItemTag) {
-                                        hide(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
-                                    }
+    setOnNavigationItemSelectedListener { item ->
+        if (item == menu.getItem(0)) {
+            MainActivity.nowTab = 0
+            menu.getItem(2).setIcon(R.drawable.ic_icons_outlined_me)
+            menu.getItem(1).setIcon(R.drawable.ic_icons_outlined_contacts)
+
+            MainActivity.activity?.getWindow()?.statusBarColor = resources.getColor(R.color.gray0)
+        }
+        if (item == menu.getItem(1)) {
+            MainActivity.nowTab = 1
+            menu.getItem(2).setIcon(R.drawable.ic_icons_outlined_me)
+            menu.getItem(1).setIcon(R.drawable.ic_icons_filled_contacts)
+
+            MainActivity.activity?.getWindow()?.statusBarColor = resources.getColor(R.color.gray0)
+        }
+        if (item == menu.getItem(2)) {
+            MainActivity.nowTab = 2
+            menu.getItem(2).setIcon(R.drawable.ic_icons_filled_official_accounts)
+            menu.getItem(1).setIcon(R.drawable.ic_icons_outlined_contacts)
+
+            MainActivity.activity?.getWindow()?.statusBarColor = resources.getColor(R.color.white)
+        }
+
+
+        val newlySelectedItemTag = graphIdToTagMap[item.itemId]
+
+        if (selectedItemTag != newlySelectedItemTag) {
+            fragmentManager.popBackStack(firstFragmentTag,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
+                    as NavHostFragment
+
+            if (firstFragmentTag != newlySelectedItemTag) {
+                fragmentManager.beginTransaction()
+                        .show(selectedFragment)
+                        .setPrimaryNavigationFragment(selectedFragment)
+                        .apply {
+                            graphIdToTagMap.forEach { _, fragmentTagIter ->
+                                if (fragmentTagIter != newlySelectedItemTag) {
+                                    hide(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
                                 }
                             }
-                            .addToBackStack(firstFragmentTag)
-                            .setReorderingAllowed(true)
-                            .commit()
-                }
-                selectedItemTag = newlySelectedItemTag
-                isOnFirstFragment = selectedItemTag == firstFragmentTag
-                selectedNavController.value = selectedFragment.navController
-                true
-            } else {
-                false
+                        }
+                        .addToBackStack(firstFragmentTag)
+                        .setReorderingAllowed(true)
+                        .commit()
             }
+            selectedItemTag = newlySelectedItemTag
+            isOnFirstFragment = selectedItemTag == firstFragmentTag
+            selectedNavController.value = selectedFragment.navController
+            true
+        } else {
+            false
         }
+
     }
-//    selectedItemId =
 
     // Optional: on item reselected, pop back stack to the destination of the graph
     setupItemReselected(graphIdToTagMap, fragmentManager)
@@ -166,7 +170,6 @@ private fun BottomNavigationView.setupItemReselected(
         val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
                 as NavHostFragment
         val navController = selectedFragment.navController
-        // Pop the back stack to the start destination of the current navController graph
         navController.popBackStack(
                 navController.graph.startDestination, false
         )

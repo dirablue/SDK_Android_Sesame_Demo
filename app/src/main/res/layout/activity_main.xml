@@ -13,30 +13,7 @@
         android:orientation="vertical"
         tools:context=".app.tabs.MainActivity">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/statusbg"
-            android:visibility="gone">
 
-            <Button
-                android:id="@+id/toggleAll"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/ic_icons_outlined_addoutline" />
-
-
-            <Button
-                android:id="@+id/right_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/ic_icons_outlined_addoutline" />
-        </RelativeLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_container"

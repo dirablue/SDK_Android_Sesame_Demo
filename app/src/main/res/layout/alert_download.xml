@@ -5,7 +5,7 @@
               android:layout_width="290dp"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:background="@drawable/bg_dialog"
+              android:background="@drawable/round_red"
               android:orientation="vertical"
               android:padding="16dp">
 
@@ -43,15 +43,6 @@
         android:visibility="gone"
         tools:text="En progreso"/>
 
-    <TextView
-        android:id="@+id/tvContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:visibility="gone"
-        tools:text="Sincronizando usuarios"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

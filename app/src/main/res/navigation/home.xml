@@ -13,7 +13,7 @@
         android:label="@string/title_friends"
         tools:layout="@layout/fg_friends">
         <action
-            android:id="@+id/action_deviceFG_to_scanFG"
+            android:id="@+id/to_scan"
             app:destination="@id/scanFG" />
         <action
             android:id="@+id/to_regist"

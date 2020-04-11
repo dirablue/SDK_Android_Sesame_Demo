@@ -48,6 +48,24 @@ import com.skydoves.balloon.*
 import java.util.*
 
 class FriendsFG : Fragment() {
+
+    companion object {
+        var instance: FriendsFG? = null
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        instance = this
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        if (MainActivity.nowTab == 1) {
+            (activity as MainActivity).showMenu()
+        }
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var swiperefreshView: SwipeRefreshLayout
     val mFriends = ArrayList<UserProfile>()
@@ -56,12 +74,11 @@ class FriendsFG : Fragment() {
         CustomAdapter(object : CustomAdapter.CustomViewHolder.Delegate {
             override fun onCustomItemClick(customItem: BarMenuItem) {
                 customListBalloon?.dismiss()
-
-                when (customItem.title) {
-                    "Add Friend" -> {
-                        findNavController().navigate(R.id.action_deviceFG_to_scanFG)
+                when (customItem.index) {
+                    0 -> {
+                        findNavController().navigate(R.id.to_scan)
                     }
-                    "New Sesame" -> {
+                    1 -> {
                         findNavController().navigate(R.id.to_regist)
                     }
                 }
@@ -81,8 +98,6 @@ class FriendsFG : Fragment() {
                 .setArrowSize(12)
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setArrowPosition(0.85f)
-                .setWidth(200)
-                .setHeight(120)
                 .setTextSize(12f)
                 .setCornerRadius(4f)
                 .setBalloonAnimation(BalloonAnimation.CIRCULAR)
@@ -91,7 +106,6 @@ class FriendsFG : Fragment() {
                 .setDismissWhenClicked(true)
                 .setOnBalloonClickListener(object : OnBalloonClickListener {
                     override fun onBalloonClick(view: View) {
-                        L.d("hcia", "onBalloonClick:")
                     }
                 })
                 .setDismissWhenClicked(true)
@@ -141,7 +155,7 @@ class FriendsFG : Fragment() {
                                 })
                                 alert.show(MainActivity.activity as AppCompatActivity)
                             }
-                            head.setImageDrawable(avatatImagGenaroter(data.lastName))
+                            head.setImageDrawable(avatatImagGenaroter(data.first_name))
                         }
                     }
                 }
@@ -154,14 +168,13 @@ class FriendsFG : Fragment() {
     fun refleshPage() {
         CHAccountManager.myFriends {
             it.onSuccess {
-                recyclerView.post {
+                recyclerView?.post {
                     mFriends.clear()
-                    mFriends.addAll(it.data)
+                    mFriends.addAll(it.data.sortedBy { it.nickname })
                     (recyclerView.adapter as GenericAdapter<*>).notifyDataSetChanged()
                 }
             }
             it.onFailure {
-                L.d("hcia", "it:" + it)
             }
             ThreadUtils.runOnUiThread {
                 swiperefreshView.isRefreshing = false

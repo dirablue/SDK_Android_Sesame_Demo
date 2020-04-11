@@ -15,22 +15,17 @@
         <action
             android:id="@+id/to_regist"
             app:destination="@id/register_list"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:enterAnim="@anim/slide_in_bottom"
+            app:popExitAnim="@anim/slide_out_up"
+            />
         <action
-            android:id="@+id/action_deviceFG_to_scanFG"
+            android:id="@+id/to_scan"
             app:destination="@id/scanFG"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            />
         <action
             android:id="@+id/action_deviceListPG_to_mainRoomFG"
             app:destination="@id/mainRoomFG"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            />
         <action
             android:id="@+id/action_deviceListPG_to_SSM2SetAngleFG"
             app:destination="@id/SSM2SetAngleFG" />
@@ -51,10 +46,8 @@
         <action
             android:id="@+id/action_mainRoomFG_to_SSM2SettingFG"
             app:destination="@id/SSM2SettingFG"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+
+            />
     </fragment>
     <fragment
         android:id="@+id/SSM2SettingFG"
@@ -78,9 +71,17 @@
     <fragment
         android:id="@+id/addMemberFG"
         android:name="com.candyhouse.app.tabs.devices.ssm2.menber.AddMemberFG"
-        android:label="AddMemberFG" />
+        android:label="AddMemberFG" >
+        <action
+            android:id="@+id/to_scan"
+            app:destination="@id/scanFG" />
+    </fragment>
     <fragment
         android:id="@+id/deleteMemberFG"
         android:name="com.candyhouse.app.tabs.devices.ssm2.menber.DeleteMemberFG"
         android:label="DeleteMemberFG" />
 </navigation>
+<!--    app:enterAnim="@anim/slide_in_right"-->
+<!--    app:exitAnim="@anim/slide_out_left"-->
+<!--    app:popEnterAnim="@anim/slide_in_left"-->
+<!--    app:popExitAnim="@anim/slide_out_right"-->

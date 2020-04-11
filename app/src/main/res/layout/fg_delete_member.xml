@@ -17,28 +17,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="members" />
-
-        <RelativeLayout
-            android:id="@+id/left_icon"
+            android:text="@string/delete_member" />
+        <include layout="@layout/back_sub"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
-            tools:ignore="UselessParent">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/ic_arrow"
-                android:rotation="180" />
-        </RelativeLayout>
+            android:layout_height="40dp"
+            >
+        </include>
 
     </RelativeLayout>
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <RelativeLayout
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,8 +45,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:context="com.candyhouse.app.tabs.devices.DeviceListFG"
-            tools:listitem="@layout/list_view_item" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            />
+    </RelativeLayout>
 
 
 </RelativeLayout>

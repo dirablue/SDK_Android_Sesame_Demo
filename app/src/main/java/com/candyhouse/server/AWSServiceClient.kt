@@ -1,5 +1,6 @@
 package com.candyhouse.server
 
+import android.widget.Toast
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
@@ -10,14 +11,11 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Mult
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.amazonaws.regions.Regions
 import com.candyhouse.app.MyApp
+import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.sesame.server.CHAccountManager
 import com.candyhouse.sesame.server.CHLoginProvider
 import com.candyhouse.sesame.server.CHOauthToken
 import com.candyhouse.utils.L
-
-/**
- *
- * */
 
 
 object AWSCognitoOAuthService : CHLoginProvider {
@@ -51,6 +49,7 @@ object AWSCognitoOAuthService : CHLoginProvider {
     fun logOut(): Boolean {
 
         userPool.currentUser.signOut()
+
         CHAccountManager.logout()
         return false
     }
@@ -69,23 +68,18 @@ object AWSCognitoOAuthService : CHLoginProvider {
                 authenticationContinuation.continueTask()
             }
 
-            override fun authenticationChallenge(continuation: ChallengeContinuation?) {
-                L.d("hcia", "authenticationChallenge")
-            }
+            override fun authenticationChallenge(continuation: ChallengeContinuation?) {}
 
-            override fun getMFACode(multiFactorAuthenticationContinuation: MultiFactorAuthenticationContinuation) {
-                L.d("hcia", "getMFACode")
-            }
+            override fun getMFACode(multiFactorAuthenticationContinuation: MultiFactorAuthenticationContinuation) {}
 
             override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
+//                userToken = userSession!!.idToken.jwtToken
                 userToken = userSession!!.idToken.jwtToken
-                L.d("hcia", "帳號密碼登入成功 請求token成功:" + userSession.idToken.jwtToken.substring(0, 5))
                 nameChange?.onName(userPool.currentUser.userId)
                 result.onSuccess(userSession.username)
             }
 
             override fun onFailure(exception: Exception) { // Sign-in failed, check exception for the cause
-                L.d("hcia", "onFailure" + exception)
                 result.onError(exception)
             }
         })
@@ -95,12 +89,7 @@ object AWSCognitoOAuthService : CHLoginProvider {
     override fun oauthToken(): CHOauthToken {
 
         val user = userPool.currentUser
-        L.d("hcia", "認證使用著" + user.userId)
-        L.d("hcia", "user:" + user.userPoolId)
-//        L.d("hcia", "user:" + user.s)
-//
         if (user.userId == null) {
-            L.d("hcia", "我沒找到使用著" + user.userId)
             return CHOauthToken(identityProviderCognito, "nouser")
         }
         user.getSession(object : AuthenticationHandler {
@@ -110,36 +99,31 @@ object AWSCognitoOAuthService : CHLoginProvider {
             }
 
             override fun authenticationChallenge(continuation: ChallengeContinuation?) {
-                L.d("hcia", "authenticationChallenge")
             }
 
             override fun getMFACode(multiFactorAuthenticationContinuation: MultiFactorAuthenticationContinuation) {
-                L.d("hcia", "getMFACode")
             }
 
             override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
+                userSession!!.refreshToken
                 userToken = userSession!!.idToken.jwtToken
-                L.d("hcia", "請求token成功:" + userSession.idToken.jwtToken.substring(0, 5))
+                L.d("hcia", "取得 userToken:" + userToken!!.slice(0..4))
             }
 
-            override fun onFailure(exception: Exception) { // Sign-in failed, check exception for the cause
-                L.d("hcia", "我請求token失敗了 ！！！！！onFailure!" + exception)//2020-02-03 14:30:45.089 21152-21152/com.candyhouse D/hcia: onFailurecom.amazonaws.mobileconnectors.cognitoidentityprovider.exceptions.CognitoInternalErrorException: Failed to authenticate user  |OnFailure 主線成(AWSServiceClient.kt:217)
+            override fun onFailure(exception: Exception) {
+//                exception is NullPointerException
+//                when (exception) {
+//                    is NullPointerException -> {
+                Toast.makeText(MainActivity.activity, exception.message, Toast.LENGTH_LONG).show()
+                L.d("hcia", "取得失敗exception:" + exception)
+//                oauthToken()
 //                CHAccountManager.setupLoginSession(AWSCognitoOAuthService)
-                L.d("hcia", "我請求token失敗了 exception.message:" + exception.message)
-                exception is NullPointerException
-
-                when (exception) {
-                    is NullPointerException -> {
-                        L.d("hcia", "我請求token失敗了 我找不到")
-                    }
-
-                }
-
+//                    }
+//                }
             }
         })
 
-
-        L.d("hcia", "我是返回的 token userToken:" + userToken?.substring(0, 5))
-        return CHOauthToken(identityProviderCognito, userToken ?: "novalue")
+        L.d("hcia", "送出４userToken:" + userToken!!.slice(0..4))
+        return CHOauthToken(identityProviderCognito, userToken ?: "")
     }
 }

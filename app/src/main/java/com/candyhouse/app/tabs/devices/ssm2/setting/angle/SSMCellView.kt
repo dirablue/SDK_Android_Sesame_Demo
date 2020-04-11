@@ -89,8 +89,6 @@ class SSMCellView @JvmOverloads constructor(
             val degree = ssm.mechStatus!!.position.toFloat() * 360 / 1024
             angle = degree % 360
         }
-
-//        L.d("hcia", "d:" + angle + " p:" + ssm.mechStatus?.position)
         invalidate()
     }
 }

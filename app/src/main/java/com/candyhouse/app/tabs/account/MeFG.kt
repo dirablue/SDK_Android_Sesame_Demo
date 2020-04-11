@@ -1,12 +1,8 @@
-
-
 package com.candyhouse.app.tabs.account
 
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
@@ -18,8 +14,9 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.UpdateAttributesHandler
 import com.candyhouse.R
-import com.candyhouse.app.tabs.account.login.LoginFragment
 import com.candyhouse.app.base.BaseFG
+import com.candyhouse.app.tabs.MainActivity
+import com.candyhouse.app.tabs.account.login.LoginFragment
 import com.candyhouse.app.tabs.devices.ssm2.room.avatatImagGenaroter
 import com.candyhouse.app.tabs.menu.BarMenuItem
 import com.candyhouse.app.tabs.menu.CustomAdapter
@@ -27,12 +24,12 @@ import com.candyhouse.app.tabs.menu.ItemUtils
 import com.candyhouse.server.AWSCognitoOAuthService
 import com.candyhouse.sesame.server.CHAccountManager
 import com.candyhouse.utils.L
-import com.utils.alertview.enums.AlertActionStyle
-import com.utils.alertview.enums.AlertStyle
 import com.irozon.alertview.AlertView
 import com.irozon.alertview.objects.AlertAction
 import com.skydoves.balloon.*
 import com.utils.SharedPreferencesUtils
+import com.utils.alertview.enums.AlertActionStyle
+import com.utils.alertview.enums.AlertStyle
 import kotlinx.android.synthetic.main.fg_me.*
 import kotlinx.android.synthetic.main.fragment_register.family_name
 import kotlinx.android.synthetic.main.fragment_register.given_name
@@ -48,17 +45,28 @@ class MeFG : BaseFG() {
         CustomAdapter(object : CustomAdapter.CustomViewHolder.Delegate {
             override fun onCustomItemClick(customItem: BarMenuItem) {
                 customListBalloon?.dismiss()
-                when (customItem.title) {
-                    "Add Friend" -> {
+                when (customItem.index) {
+                    0 -> {
                         findNavController().navigate(R.id.to_scan)
                     }
-                    "New Sesame" -> {
+                    1 -> {
                         findNavController().navigate(R.id.to_regist)
                     }
                 }
             }
         })
     }
+
+    override fun onResume() {
+        super.onResume()
+//        L.d("hcia", "我 onResume:" )
+
+        if (MainActivity.nowTab == 2) {
+            (activity as MainActivity).showMenu()
+        }
+//        setName()
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fg_me, container, false)
@@ -84,8 +92,6 @@ class MeFG : BaseFG() {
                 .setArrowSize(12)
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setArrowPosition(0.85f)
-                .setWidth(200)
-                .setHeight(120)
                 .setTextSize(12f)
                 .setCornerRadius(4f)
                 .setBalloonAnimation(BalloonAnimation.CIRCULAR)
@@ -94,7 +100,6 @@ class MeFG : BaseFG() {
                 .setDismissWhenClicked(true)
                 .setOnBalloonClickListener(object : OnBalloonClickListener {
                     override fun onBalloonClick(view: View) {
-                        L.d("hcia", "onBalloonClick:")
                     }
                 })
                 .setDismissWhenClicked(true)
@@ -123,6 +128,7 @@ class MeFG : BaseFG() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        L.d("hcia", "我 onViewCreated:" )
 
         qrcode.setOnClickListener {
             MyQrcodeFG.mailStr = mail.text.toString()
@@ -131,15 +137,12 @@ class MeFG : BaseFG() {
             findNavController().navigate(R.id.action_register_to_myQrcodeFG)
         }
         change_name_zone.setOnClickListener {
-            context?.inputNameAlert(getString(R.string.edit_name), "") {
+            context?.inputNameAlert(getString(R.string.edit_name), family_name.text.toString(), given_name.text.toString()) {
                 confirmButtonWithDoubleEdit("OK") { name, top, down ->
-                    L.d("hcia", "top:" + top + " down:" + down)
-
                     Thread(Runnable {
                         val awsAttributes = CognitoUserAttributes()
                         awsAttributes.addAttribute("family_name", top)
                         awsAttributes.addAttribute("given_name", down)
-                        L.d("hcia", "awsAttributes:" + awsAttributes)
                         AWSCognitoOAuthService.userPool.currentUser.updateAttributes(awsAttributes, object : UpdateAttributesHandler {
                             override fun onSuccess(attributesVerificationList: MutableList<CognitoUserCodeDeliveryDetails>?) {
                                 this@MeFG.given_name?.post {
@@ -167,7 +170,7 @@ class MeFG : BaseFG() {
     /**
      * given_name 名
      * family_name 姓
-    * */
+     * */
     private fun setName() {
 
         this@MeFG.family_name?.text = SharedPreferencesUtils.family_name
@@ -179,7 +182,6 @@ class MeFG : BaseFG() {
                 mail.text = myID
                 AWSCognitoOAuthService.userPool.currentUser.getDetailsInBackground(object : GetDetailsHandler {
                     override fun onSuccess(cognitoUserDetails: CognitoUserDetails?) {
-                        //                        L.d("hcia", "cognitoUserDetails:" + cognitoUserDetails)
                         this@MeFG.given_name?.post {
                             cognitoUserDetails?.attributes?.attributes?.forEach {
                                 when (it.key) {
@@ -191,16 +193,15 @@ class MeFG : BaseFG() {
                                     "family_name" -> {
                                         this@MeFG.family_name?.text = it.value
                                         SharedPreferencesUtils.family_name = it.value
-
                                     }
                                 }
                             }
+//                            L.d("hcia","綁定名字")
                             CHAccountManager.updateMyProfile(this@MeFG.given_name.text.toString(), this@MeFG.family_name.text.toString()) {}
                         }
                     }
 
                     override fun onFailure(exception: Exception?) {
-//                        L.d("hcia", "exception:" + exception)
                     }
                 })
             }

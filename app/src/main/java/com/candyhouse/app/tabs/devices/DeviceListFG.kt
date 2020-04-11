@@ -11,21 +11,24 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import androidx.core.view.isEmpty
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread
+import com.candyhouse.BuildConfig
 import com.candyhouse.R
 import com.candyhouse.app.base.BaseFG
+import com.candyhouse.app.base.BaseNFG
+import com.candyhouse.app.base.BaseSSMFG
+import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.app.tabs.devices.ssm2.room.MainRoomFG
 import com.candyhouse.app.tabs.devices.ssm2.setting.angle.SSMCellView
-import com.candyhouse.app.tabs.devices.ssm2.setting.angle.SesameView
 import com.candyhouse.app.tabs.devices.ssm2.test.BlueSesameControlActivity
 import com.candyhouse.app.tabs.menu.BarMenuItem
 import com.candyhouse.app.tabs.menu.CustomAdapter
 import com.candyhouse.app.tabs.menu.ItemUtils
-import com.candyhouse.sesame.BuildConfig
 import com.candyhouse.sesame.ble.*
 import com.candyhouse.sesame.ble.Sesame2.CHSesameBleDeviceDelegate
 import com.candyhouse.sesame.deviceprotocol.CHBatteryStatus
@@ -57,11 +60,11 @@ class DeviceListFG : BaseFG() {
         CustomAdapter(object : CustomAdapter.CustomViewHolder.Delegate {
             override fun onCustomItemClick(customItem: BarMenuItem) {
                 customListBalloon?.dismiss()
-                when (customItem.title) {
-                    "Add Friend" -> {
-                        findNavController().navigate(R.id.action_deviceFG_to_scanFG)
+                when (customItem.index) {
+                    0 -> {
+                        findNavController().navigate(R.id.to_scan)
                     }
-                    "New Sesame" -> {
+                    1 -> {
                         findNavController().navigate(R.id.to_regist)
                     }
                 }
@@ -69,9 +72,11 @@ class DeviceListFG : BaseFG() {
         })
     }
 
-
     override fun onResume() {
         super.onResume()
+        if (MainActivity.nowTab == 0) {
+            (activity as MainActivity).showMenu()
+        }
 
         CHBleManager.delegate = object : CHBleManagerDelegate {
             override fun didDiscoverSesame(device: CHSesameBleInterface) {
@@ -81,19 +86,16 @@ class DeviceListFG : BaseFG() {
                 if (device.accessLevel == CHDeviceAccessLevel.unknown) {
                     return
                 }
-                runOnUiThread {
-                    deviceMap.put(device.bleIdStr, device)
-                    mDeviceList.clear()
-                    mDeviceList.addAll(deviceMap.toList())
-                    (recyclerView.adapter as GenericAdapter<*>).notifyDataSetChanged()
-                }
+                deviceMap.put(device.bleIdStr, device)
+                refleshTable()
             }
         }
+        recyclerView.isEmpty()
+//        recyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        L.d("hcia", "鎖列表 ")
         val view = inflater.inflate(R.layout.fg_devicelist, container, false)
         val menuBtn = view.findViewById<View>(R.id.right_icon).apply {
             setOnClickListener {
@@ -106,8 +108,6 @@ class DeviceListFG : BaseFG() {
                 .setArrowSize(12)
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setArrowPosition(0.85f)
-                .setWidth(200)
-                .setHeight(120)
                 .setTextSize(12f)
                 .setCornerRadius(4f)
                 .setBalloonAnimation(BalloonAnimation.CIRCULAR)
@@ -116,7 +116,6 @@ class DeviceListFG : BaseFG() {
                 .setDismissWhenClicked(true)
                 .setOnBalloonClickListener(object : OnBalloonClickListener {
                     override fun onBalloonClick(view: View) {
-//                        L.d("hcia", "onBalloonClick:")
                     }
                 })
                 .setDismissWhenClicked(true)
@@ -135,8 +134,13 @@ class DeviceListFG : BaseFG() {
                 .apply {
                     setHasFixedSize(true)
                     adapter = customAdapter
+                    var ly: LinearLayoutManager = object : LinearLayoutManager(context) {
+                        override fun canScrollVertically(): Boolean {
+                            return false
+                        }
+                    }
                     customAdapter.addCustomItem(ItemUtils.getCustomSamples(context!!))
-                    layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                    layoutManager = ly
                 }
 
         swiperefreshView = view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).apply {
@@ -168,12 +172,12 @@ class DeviceListFG : BaseFG() {
                             val sesame = data.second
                             sesame.delegate = object : CHSesameBleDeviceDelegate {
                                 override fun onBleDeviceStatusChanged(device: CHSesameBleInterface, status: CHDeviceStatus) {
+//                                    L.d("hcia", device.customNickname+"device.chDeviceStatus:" + device.chDeviceStatus)
                                     toggle.setBackgroundResource(ssmUIParcer(device))
                                     battery.setBackgroundResource(ssmBatteryParcer(device))
                                     battery_percent.text = sesame.mechStatus?.batteryPrecentage().toString() + "%"
                                     battery_percent.visibility = if (sesame.mechStatus == null) View.GONE else View.VISIBLE
                                     battery.visibility = if (sesame.mechStatus == null) View.GONE else View.VISIBLE
-
                                     ssmView.setLock(device)
                                 }
                             }
@@ -198,19 +202,10 @@ class DeviceListFG : BaseFG() {
                                 BlueSesameControlActivity.ssm = sesame
                                 view.context.startActivity(Intent(view.context, BlueSesameControlActivity().javaClass))
                             }
-                            battery_percent.text = sesame.mechStatus?.battery.toString()
                             view.setOnClickListener {
-
-                                MainRoomFG.ssm = sesame
+                                BaseSSMFG.mSesame = sesame
                                 findNavController().navigate(R.id.action_deviceListPG_to_mainRoomFG)
-
-//                                SSM2SetAngleFG.ssm = sesame
-//                                findNavController().navigate(R.id.action_deviceListPG_to_SSM2SetAngleFG)
-
                             }
-
-
-
                         }
                     }
                 }
@@ -229,43 +224,48 @@ class DeviceListFG : BaseFG() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        testSwich.isChecked = true
-        if(BuildConfig.BUILD_TYPE == "debug"){
+
+        if (BuildConfig.BUILD_TYPE == "debug") {
+            testSwich.isChecked = true
             testSwich.visibility = View.VISIBLE
+        } else {
+            testSwich.isChecked = false
+            testSwich.visibility = View.INVISIBLE
         }
 
-            CHBleManager.discoverALLDevices() {
+        CHBleManager.discoverALLDevices() {
             deviceMap.clear()
-            mDeviceList.clear()
             it.forEach {
                 deviceMap.put(it.bleIdStr, it)
             }
-            mDeviceList.addAll(deviceMap.toList())
-            runOnUiThread {
-                recyclerView.adapter?.notifyDataSetChanged()
-            }
+
+            refleshTable()
         }
     }
 
-    //todo ui sync fail
+    private fun refleshTable() {
+        recyclerView?.post {
+            mDeviceList.clear()
+            mDeviceList.addAll(deviceMap.toList().sortedByDescending { it.second.customNickname })
+            (recyclerView.adapter as GenericAdapter<*>).notifyDataSetChanged()
+        }
+    }
+
     fun refleshPage() {
         runOnUiThread {
             swiperefreshView.isRefreshing = true
         }
-        CHAccountManager.flushDevices() { result ->
+        CHAccountManager.flushDevices { result ->
             result.onSuccess {
-                L.d("hcia", "UI it:" + it)
                 CHBleManager.discoverALLDevices() {
-                    L.d("hcia", "UI it:" + it)
                     deviceMap.clear()
-                    mDeviceList.clear()
                     it.forEach {
                         deviceMap.put(it.bleIdStr, it)
                     }
-                    mDeviceList.addAll(deviceMap.toList())
-                    runOnUiThread {
-                        recyclerView.adapter?.notifyDataSetChanged()
-                    }
+
+
+                    refleshTable()
+
                 }
                 runOnUiThread {
                     swiperefreshView.isRefreshing = false
@@ -289,6 +289,7 @@ fun ssmUIParcer(device: CHSesameBleInterface): Int {
         CHDeviceStatus.unlocked -> R.drawable.icon_unlock
         CHDeviceStatus.nosetting -> R.drawable.icon_nosetting
         CHDeviceStatus.moved -> R.drawable.icon_unlock
+        CHDeviceStatus.reset -> R.drawable.icon_nosignal
     }
 }
 

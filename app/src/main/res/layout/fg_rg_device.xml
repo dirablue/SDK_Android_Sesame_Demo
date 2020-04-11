@@ -7,52 +7,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/menu"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/statusbg">
 
-        <ImageView
-            android:id="@+id/backicon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:paddingRight="12dp"
-            android:rotation="180"
-            android:scaleType="center"
-            android:src="@drawable/ic_arrow" />
-
-
-        <TextView
-            android:id="@+id/titlec"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:text="name"
-            android:textColor="@color/title">
-
-        </TextView>
-
-
-    </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ImageView
+        android:id="@+id/backicon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:padding="22dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_icons_filled_close" />
+    <com.utils.recycle.EmptyRecyclerView
         android:id="@+id/leaderboard_list"
         android:layout_width="match_parent"
 
         android:layout_height="match_parent"
-        android:layout_below="@+id/menu"
+        android:layout_below="@+id/backicon"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context="com.candyhouse.app.tabs.devices.DeviceListFG"
-        tools:listitem="@layout/list_view_item" />
+        />
+
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:text="@string/no_new_devices"
+        android:layout_height="wrap_content">
+
+    </TextView>
 
 
 </RelativeLayout>

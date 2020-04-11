@@ -36,8 +36,8 @@ class SesameView @JvmOverloads constructor(
 
     init {
         ssmImg = ContextCompat.getDrawable(context, R.drawable.img_knob_3x)!!.toBitmap()
-        lockImg = ContextCompat.getDrawable(context, R.drawable.icon_lock)!!.toBitmap()
-        unlockImg = ContextCompat.getDrawable(context, R.drawable.icon_unlock)!!.toBitmap()
+        lockImg = ContextCompat.getDrawable(context, R.drawable.ic_icon_locked)!!.toBitmap()
+        unlockImg = ContextCompat.getDrawable(context, R.drawable.ic_icon_unlocked)!!.toBitmap()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -53,7 +53,7 @@ class SesameView @JvmOverloads constructor(
         ssmWidth = width / 2
         ssmMargin = (width - ssmWidth) / 2
 
-        lockWidth = width / 10
+        lockWidth = width / 15
         lockMargin = ssmWidth / 2 + lockWidth
         lockCenter = midx!! - lockWidth / 2 // must  x = y
     }
@@ -89,7 +89,6 @@ class SesameView @JvmOverloads constructor(
         angle = degree % 360
         lockAngle = lockDegree % 360
         unlockAngle = unlockDegree % 360
-//        L.d("hcia", "d:" + angle + " p:" + ssm.mechStatus?.position)
         invalidate()
     }
 }
@@ -102,5 +101,4 @@ fun Bitmap.rotate(degrees: Float): Bitmap {
     return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
 }
 
-//fun Float.toDG(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 fun Float.toDG(): Double = Math.toRadians(this.toDouble())

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.candyhouse.R
 import com.candyhouse.app.base.BaseFG
+import com.candyhouse.app.base.BaseSSMFG
 import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.app.tabs.devices.ssm2.room.avatatImagGenaroter
 import com.candyhouse.sesame.ble.CHSesameBleInterface
@@ -25,9 +26,10 @@ import com.irozon.alertview.objects.AlertAction
 import com.kasturi.admin.genericadapter.GenericAdapter
 import com.utils.alertview.enums.AlertActionStyle
 import com.utils.alertview.enums.AlertStyle
+import kotlinx.android.synthetic.main.back_sub.*
 import kotlinx.android.synthetic.main.fg_delete_member.*
 
-class DeleteMemberFG : BaseFG() {
+class DeleteMemberFG : BaseSSMFG() {
     var memberList = ArrayList<CHMemberAndOperater>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,9 +40,9 @@ class DeleteMemberFG : BaseFG() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        swiperefresh.apply {
-            setOnRefreshListener { refleshPage() }
-        }
+//        swiperefresh.apply {
+//            setOnRefreshListener { refleshPage() }
+//        }
 
         recy.apply {
             setHasFixedSize(true)
@@ -62,8 +64,10 @@ class DeleteMemberFG : BaseFG() {
                             itemView.setOnClickListener {
                                 val alert = AlertView(data.opetator!!.name, "", AlertStyle.IOS)
                                 alert.addAction(AlertAction(getString(R.string.delete_member), AlertActionStyle.NEGATIVE) { action ->
-                                    ssm?.revokeKeyfromMember(data.member) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: Any? ->
-                                        L.d("hcia", "刪除成功:" + cmd)
+                                    MainActivity.activity?.showProgress()
+
+                                    mSesame?.revokeKeyfromMember(data.member) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: Any? ->
+                                        MainActivity.activity?.hideProgress()
                                         refleshPage()
                                     }
                                 })
@@ -75,7 +79,7 @@ class DeleteMemberFG : BaseFG() {
                 }
             }
         }
-        left_icon.setOnClickListener {
+        backicon.setOnClickListener {
             findNavController().navigateUp()
         }
 
@@ -83,12 +87,11 @@ class DeleteMemberFG : BaseFG() {
     }
 
     fun refleshPage() {
-        ssm?.getDeviceMembers() {
+        mSesame?.getDeviceMembers() {
             it.onSuccess {
-//                L.d("hcia", "UI收到成員it:" + it)
                 val ss: List<CHMemberAndOperater> = it.data
                 memberList.clear()
-                memberList.addAll(ss).apply {
+                memberList.addAll(ss.sortedByDescending { it.member.role }).apply {
                     recy?.post {
                         recy?.adapter?.notifyDataSetChanged()
                     }
@@ -97,8 +100,4 @@ class DeleteMemberFG : BaseFG() {
         }
     }
 
-    companion object {
-        @JvmField
-        var ssm: CHSesameBleInterface? = null
-    }
 }

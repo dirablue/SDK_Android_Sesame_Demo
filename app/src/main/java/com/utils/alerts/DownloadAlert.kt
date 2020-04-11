@@ -6,13 +6,13 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.candyhouse.R
+import com.candyhouse.utils.L
 import kotlinx.android.synthetic.main.alert_download.view.*
 
 
 class DownloadAlert(context: Context) : BaseAlert(context) {
 
     var titleText: String? = null
-    var contentText: String? = null
 
     override val layout: Int get() = R.layout.alert_download
 
@@ -26,10 +26,7 @@ class DownloadAlert(context: Context) : BaseAlert(context) {
                 tvTitle.visibility = View.VISIBLE
             }
 
-            contentText?.let {
-                tvContent.text = it
-                tvContent.visibility = View.VISIBLE
-            }
+
 
             progressBar.isIndeterminate = true
 

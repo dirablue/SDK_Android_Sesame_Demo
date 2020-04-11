@@ -1,27 +1,32 @@
 package com.candyhouse.app.tabs.account.login
 
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.candyhouse.R
 import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.app.tabs.devices.DeviceListFG
+import com.candyhouse.app.tabs.friends.FriendsFG
 import com.candyhouse.server.AWSCognitoOAuthService
 import com.candyhouse.sesame.deviceprotocol.SSM2ItemCode
 import com.candyhouse.sesame.server.CHAccountManager
 import com.candyhouse.utils.L
 import kotlinx.android.synthetic.main.fragment_login.*
+import pe.startapps.alerts.ext.*
 
 
 class LoginFragment : DialogFragment() {
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = Dialog(activity, R.style.AppTheme_FlatDialog)
+        return dialog
+    }
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
@@ -29,6 +34,13 @@ class LoginFragment : DialogFragment() {
                 ViewGroup.LayoutParams.MATCH_PARENT
         )
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialog?.window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            dialog?.window?.setStatusBarColor(Color.WHITE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                dialog?.window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,11 +66,13 @@ class LoginFragment : DialogFragment() {
                 return true
             }
         })
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         pBar.visibility = View.GONE
         sign_up.setOnClickListener {
             SignUpFragment.newInstance().show(activity!!.supportFragmentManager, "")
@@ -86,7 +100,7 @@ class LoginFragment : DialogFragment() {
                         override fun onSuccess(v: String?) {
                             CHAccountManager.setupLoginSession(AWSCognitoOAuthService)
                             DeviceListFG.instance?.refleshPage()
-                            (activity as MainActivity).refreshFriend()
+                            FriendsFG.instance?.refleshPage()
                             this@LoginFragment.dismiss()
                         }
 
@@ -108,9 +122,15 @@ class LoginFragment : DialogFragment() {
             loginBtn.performClick()
 
         }
-        jmingtest.setOnClickListener {
+        hootest.setOnClickListener {
             nameEdt.setText("tse+5@candyhouse.co")
             passwordEdt.setText("111111")
+            loginBtn.performClick()
+        }
+
+        peter3.setOnClickListener {
+            nameEdt.setText("peter.su+3@candyhouse.co")
+            passwordEdt.setText("333333")
             loginBtn.performClick()
         }
     }

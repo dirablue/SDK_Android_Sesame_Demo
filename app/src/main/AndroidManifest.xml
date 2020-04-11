@@ -48,7 +48,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.candyhouse.app.tabs.MainActivity">
+        <activity android:name="com.candyhouse.app.tabs.MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -58,13 +60,7 @@
             <nav-graph android:value="@navigation/list" />
         </activity>
         <activity android:name="com.candyhouse.app.tabs.devices.ssm2.test.BlueSesameControlActivity" />
-        <activity android:name=".app.tabs.devices.ssm2.setting.NotificationActivity" />
 
-        <!--        <service android:name=".app.ForegroundService" />-->
-        <service
-            android:name=".app.base.FloatingWidgetService"
-            android:enabled="true"
-            android:exported="false" />
         <service
             android:name=".app.tabs.devices.ssm2.setting.DfuService"
             android:exported="true"
@@ -75,10 +71,6 @@
             </intent-filter>
         </service>
 
-        <!--        <service-->
-        <!--            android:name=".app.base.ShowHudService"-->
-        <!--            android:enabled="true"-->
-        <!--            android:exported="false"/>-->
     </application>
 
 </manifest>

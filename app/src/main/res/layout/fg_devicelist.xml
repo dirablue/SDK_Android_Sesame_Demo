@@ -55,7 +55,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:context="com.candyhouse.app.tabs.devices.DeviceListFG"
-            tools:listitem="@layout/list_view_item" />
+            />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 

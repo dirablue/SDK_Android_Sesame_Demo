@@ -1,110 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="290dp"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:background="@drawable/bg_dialog"
-              android:orientation="vertical"
-              android:padding="16dp"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.FlatDialog"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/ivIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:visibility="gone"/>
-
-    </FrameLayout>
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/tvTitle"
+        android:padding="22dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:visibility="gone"
-        tools:text="Titulo"/>
+        android:textSize="16sp"
+        tools:text="Titulo" />
 
-    <TextView
-        android:id="@+id/tvContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:visibility="gone"
-        />
 
     <EditText
+
         android:id="@+id/etInput"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
+        android:background="@color/clear"
         android:gravity="left|center_vertical"
         android:inputType="text"
-        android:hint="@string/last_name"
-        android:paddingLeft="10dp"
-        android:visibility="gone"
-        android:background="@drawable/rounded_edt"
-        android:textSize="14sp"
 
-        tools:hint="Ingresar algo"/>
+        android:paddingLeft="28dp"
+        android:textSize="16sp"
+        tools:hint="Ingresar algo" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/hint_top"
+        android:layout_marginTop="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/last_name"
+        android:textColor="@color/text_hint"
+        android:textSize="12sp" />
+
     <EditText
+        android:layout_marginTop="10dp"
         android:id="@+id/etInput__2"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
+        android:background="@color/clear"
         android:gravity="left|center_vertical"
         android:inputType="text"
-        android:textSize="14sp"
-        android:hint="@string/first_name"
-        android:visibility="gone"
-        android:paddingLeft="10dp"
-        android:background="@drawable/rounded_edt"
-        tools:hint="Ingresar algo"/>
+
+        android:paddingLeft="28dp"
+        android:textSize="16sp"
+        tools:hint="Ingresar algo" />
+
+    <View
+        android:id="@+id/hintl2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/hintt2"
+        android:layout_marginTop="3dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/first_name"
+        android:textColor="@color/text_hint"
+        android:textSize="12sp" />
+
+    <View
+
+        android:layout_marginTop="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray0" />
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
+            android:textStyle="bold"
+
             android:id="@+id/btnCancel"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            tools:text="@string/cancel"/>
+            android:text="@string/cancel" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/gray0" />
 
         <Button
             android:id="@+id/btnConfirm"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            tools:text="OK"/>
+            tools:text="OK" />
 
     </LinearLayout>
 

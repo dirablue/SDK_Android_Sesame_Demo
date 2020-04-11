@@ -16,53 +16,45 @@
 
 package com.candyhouse.app.tabs.account
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil
+import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder
 import com.candyhouse.R
 import com.candyhouse.app.base.BaseNFG
+import com.candyhouse.app.tabs.MainActivity
 import com.candyhouse.app.tabs.devices.ssm2.room.avatatImagGenaroter
 import com.candyhouse.sesame.server.CHAccountManager
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.WriterException
-import com.google.zxing.qrcode.QRCodeWriter
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import kotlinx.android.synthetic.main.back_sub.*
 import kotlinx.android.synthetic.main.fg_myqr.*
-import java.io.IOException
 
 
 class MyQrcodeFG : BaseNFG() {
+    private var originalColor: Int? = null
+
     companion object {
         var mailStr: String? = null
         var givenName: String? = null
         var familyName: String? = null
     }
 
+    override fun onPause() {
+        super.onPause()
+        MainActivity.activity?.getWindow()?.statusBarColor = originalColor!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+        originalColor = MainActivity.activity?.getWindow()?.statusBarColor
+        MainActivity.activity?.getWindow()?.statusBarColor = resources.getColor(R.color.gray0)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fg_myqr, container, false)
         return view
-    }
-
-    @Throws(WriterException::class, IOException::class)
-    private fun generateQRCodeImage(text: String, width: Int, height: Int): Bitmap {
-        val qrCodeWriter = QRCodeWriter()
-        val hints = HashMap<EncodeHintType, Any>()
-        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H)
-        val bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height, hints)
-        val height = bitMatrix.height
-        val width = bitMatrix.width
-        val bmp: Bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-        for (x in 0 until width) {
-            for (y in 0 until height) {
-                bmp.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
-            }
-        }
-        return bmp
     }
 
 
@@ -71,9 +63,12 @@ class MyQrcodeFG : BaseNFG() {
 
         CHAccountManager.getInvitation() {
             it.onSuccess {
-                val image = generateQRCodeImage(it, 350, 350)
+                val image = QRCodeEncoder.syncEncodeQRCode(it, BGAQRCodeUtil.dp2px(context, 150f))
                 qrcode.post {
                     qrcode.setImageBitmap(image)
+                    headv.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+
                 }
             }
         }
@@ -83,9 +78,11 @@ class MyQrcodeFG : BaseNFG() {
         headv?.setImageDrawable(avatatImagGenaroter(givenName))
         head?.setImageDrawable(avatatImagGenaroter(givenName))
 
-        left_icon.setOnClickListener {
+        backicon.setOnClickListener {
             findNavController().navigateUp()
         }
 
     }
+
+
 }

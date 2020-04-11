@@ -11,25 +11,30 @@
         android:layout_height="40dp"
         android:background="@color/statusbg">
 
-        <ImageView
-            android:id="@+id/backicon"
-            android:layout_width="65dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:rotation="180"
-            android:scaleType="center"
-            android:src="@drawable/ic_arrow" />
-
-        <TextView
-            android:id="@+id/title"
+        <include layout="@layout/back_sub"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/backicon"
-            android:text="name"
-            android:textColor="@color/title">
+            android:layout_height="40dp"
+            >
+        </include>
+<!--        <ImageView-->
+<!--            android:id="@+id/backicon"-->
+<!--            android:layout_width="65dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:rotation="180"-->
+<!--            android:scaleType="center"-->
+<!--            android:src="@drawable/ic_arrow" />-->
 
-        </TextView>
+<!--        <TextView-->
+<!--            android:id="@+id/title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_toRightOf="@+id/backicon"-->
+<!--            android:text="name"-->
+<!--            android:textColor="@color/title">-->
+
+<!--        </TextView>-->
 
 
         <RelativeLayout

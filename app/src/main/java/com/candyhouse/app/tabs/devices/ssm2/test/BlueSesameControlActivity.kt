@@ -32,8 +32,6 @@ class BlueSesameControlActivity : AppCompatActivity(), CHSesameBleDeviceDelegate
 
     override fun onResume() {
         super.onResume()
-        L.d("hcia", "BlueSesameControlActivity onResume:")
-
         CHBleManager.delegate = this
     }
 
@@ -41,8 +39,6 @@ class BlueSesameControlActivity : AppCompatActivity(), CHSesameBleDeviceDelegate
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ble_control)
-        L.d("hcia", "BlueSesameControlActivity onCreate:")
-
         ssm?.delegate = this
         ssm?.connnect()
 
@@ -53,25 +49,8 @@ class BlueSesameControlActivity : AppCompatActivity(), CHSesameBleDeviceDelegate
         registerstatus.setText(if (ssm!!.isRegistered) "register" else "unregister")
 
         register.setOnClickListener {
-            //            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-//            builder.setTitle("Device Name")
-//            val input = EditText(this)
-//            builder.setView(input)
-//            builder.setPositiveButton("OK", { dialogInterface: DialogInterface, i: Int ->
-//                val inputName = input.text.toString()
-//                L.d("hcia", "inputName:" + inputName)
-//            })
-//            builder.setNegativeButton("Cancle", { dialogInterface: DialogInterface, i: Int ->
-//                dialogInterface.cancel()
-//            })
-//            builder.show()
-
-
-            ssm?.register() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: Any? ->
-
-
+            ssm?.register("test") { res ->
             }
-
         }
 
 
@@ -92,7 +71,6 @@ class BlueSesameControlActivity : AppCompatActivity(), CHSesameBleDeviceDelegate
         unregisterServer.setOnClickListener {
             ssm?.unregisterServer() {
                 it.onSuccess {
-                    L.d("hcia", "it:" + it)
                 }
             }
         }
@@ -105,9 +83,6 @@ class BlueSesameControlActivity : AppCompatActivity(), CHSesameBleDeviceDelegate
             builder.setView(input)
             builder.setPositiveButton("OK", { dialogInterface: DialogInterface, i: Int ->
                 val inputSecond = input.text.toString()
-                L.d("hcia", "inputSecond:" + inputSecond)
-                L.d("hcia", "inputSecond.toUShort():" + inputSecond.toUShort())
-
                 ssm?.autolock(inputSecond.toInt()) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
                     autolockStatus.text = second.toString()
                 }
@@ -144,11 +119,8 @@ class BlueSesameControlActivity : AppCompatActivity(), CHSesameBleDeviceDelegate
 
     @SuppressLint("SetTextI18n")
     override fun didDiscoverSesame(device: CHSesameBleInterface) {
-//        L.d("hcia", "device:" + device)
-
         runOnUiThread(Runnable {
             if (ssm?.bleIdStr == device.bleIdStr) {
-//                L.d("hcia", "更新ssmssm:" + ssm)
                 ssm = device
                 ssm?.delegate = this
                 registerstatus.setText(if (ssm!!.isRegistered) "register" else "unregister")

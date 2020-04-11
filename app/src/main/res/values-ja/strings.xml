@@ -35,6 +35,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logout">ログアウト</string>
     <string name="Sesame">セサミ</string>
+    <string name="Sesame2">セサミ2</string>
     <string name="title_friends">連絡先</string>
     <string name="change_sesame_name">セサミの名前を変更</string>
     <string name="qrhint">QRコードをスキャンして連絡先へ追加してください</string>
@@ -53,68 +54,47 @@
     <string name="verification_code">認証</string>
     <string name="send_verification_code">認証コードを送信する</string>
     <string name="re_send_verification_code">認証コードを再送信する</string>
-    <string name="set_lock_position">施錠の角度を設定</string>
-    <string name="set_unlock_position">解錠の角度を設定</string>
+    <string name="set_lock_position">施錠の位置を固定する</string>
+    <string name="set_unlock_position">解錠の位置を固定する</string>
     <string name="second">秒後</string>
     <string name="delete_member">メンバーを削除</string>
     <string name="add_member">メンバーに追加</string>
+    <string name="member">メンバー</string>
     <string name="edit_name">名前を変更</string>
     <string name="manua_lock">手動施錠</string>
     <string name="manua_unlock">手動施錠</string>
+    <string name="please_configure">施錠・解錠位置を設定してください。</string>
+    <string name="please_complete">セサミを完全に施錠・解錠した状態まで回し、画面の設定ボタンをそれぞれタップしてください</string>
+    <string name="add_contacts">連絡先の追加</string>
+    <string name="new_sesame">新規セサミ</string>
+    <string name="scan_the_qr_code">QRコードをスキャンする</string>
+    <string name="give_cool_name">かっこいい名前をつけてあげてね！😎</string>
+    <string name="no_new_devices">デバイスなし</string>
+
+    <!--    <string name="succeeded">完了</string>-->
+    <!--    <string name="start">スタート</string>-->
+    <!--    <string name="close">閉じる</string>-->
+    <!--    <string name="start_soon">間もなく開始する…</string>-->
+    <!--    <string name="sesame_os_update">SesameOSをアップデート</string>-->
+    <!--    <string name="initializing">初期化中…</string>-->
+
+    <string name="onProgressChanged">モード変換中… </string>
+    <string name="onDeviceDisconnecting">切断中…</string>
+    <string name="onDeviceDisconnected">未接続</string>
+    <string name="onDeviceConnected">接続</string>
+    <string name="onDfuProcessStarting">初期化中…</string>
+    <string name="onDfuAborted">中断しました</string>
+    <string name="onEnablingDfuMode">起動中…</string>
+    <string name="onDfuCompleted">完了</string>
+    <string name="onDeviceConnecting">接続中… </string>
+    <string name="onFirmwareValidating">認証中</string>
+    <string name="onDfuProcessStarted">スタート </string>
+    <string name="onError">エラー</string>
+
+    　
 
 
 </resources>
-
-
-    <!--    "Add Contacts" = "連絡先の追加";-->
-    <!--    "New Sesame" = "新規セサミ";-->
-    <!--    "Full Name" = "お名前";-->
-    <!--    "Delete this Sesame" = "セサミを削除";-->
-    <!--    "autolock" = "オートロック";-->
-    <!--    "manualOperated" = "サムターンに動きあり";-->
-
-    <!--    "Set Lock Position" = "施錠の角度を設定";-->
-    <!--    "Set Unlock Position" = "解錠の角度を設定";-->
-    <!--    "sesame_2" = "セサミ2";-->
-    <!--    "Verification code" = "認証";-->
-    <!--    "Verification" = "認証する";-->
-
-    <!--    "Forget password" = "パスワードをお忘れですか？";-->
-    <!--    "Re-send verification code" = "認証コードを再送信する";-->
-    <!--    "Send verification code" = "認証コードを送信する";-->
-
-    <!--    "New Password" = "新しいパスワード";-->
-    <!--    "Change Success" = "変更成功";-->
-    <!--    "No Scanable Devices" = "デバイスなし";-->
-    <!--    "No Friends" = "連絡先なし";-->
-    <!--    "Scan in the Frame" = "スキャンする";-->
-    <!--    "DEVICE_NOT_FOUND" = "DEVICE_NOT_FOUND ";-->
-    <!--    "User is not confirmed." = "User is not confirmed.";-->
-    <!--    "An account with the given email already exists." = "An account with the given email already exists.";-->
-    <!--    "OK" = "OK";-->
-    <!--    "sec" = "秒後";// After X sec  ->  _ X 秒後-->
-    <!--    "After" = "";-->
-    <!--    "Too Close" = "近すぎる";-->
-    <!--    "Sesame Name" = "セサミの名前";-->
-    <!--    "You have successfully changed the password" = "パスワードの変更完了しました";-->
-    <!--    "No Devices" = "登録デバイスなし";-->
-    <!--    "No Contacts" = "連絡先なし";-->
-    <!--    "Scan the QR code" = "QRコードをスキャンする";-->
-    <!--    "Assign Name to Sesame" = "名前をつける";-->
-    <!--    "Give your Sesame a cooool name ! 😎" = "セサミにかっこいい名前をつけてあげてね！😎";-->
-    <!--    "Members" = "メンバー";-->
-
-    <!--    "Pull to refresh" = "スクロールで更新";-->
-    <!--    "Scan this QR code to add me on your contact" = "QRコードをスキャンして連絡先へ追加してください";-->
-
-    <!--    "Enter Sesame name" = "名前未入力";-->
-    <!--    "Set Complete" = "設定完了";-->
-
-
-    <!--    // "DEVICE NOT FOUND" = "セサミが見つかりません";-->
-    <!--    // "User has not been yet confirmed. Please enter the verification code in order to complete confirmation." = "認証コードを入力してアカウントの認証行なってください。";-->
-    <!--    // "An account already exists with this email address." = "もう既にこのメールアドレスでアカウント登録済みです"-->
-
 
 
 

@@ -15,19 +15,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.candyhouse.R
 import com.candyhouse.app.base.BaseNFG
+import com.candyhouse.app.base.BaseSSMFG
 import com.candyhouse.app.tabs.devices.DeviceListFG
 import com.candyhouse.app.tabs.devices.ssm2.menber.AddMemberFG
 import com.candyhouse.app.tabs.devices.ssm2.menber.DeleteMemberFG
 import com.candyhouse.app.tabs.devices.ssm2.room.MainRoomFG
 import com.candyhouse.app.tabs.devices.ssm2.room.avatatImagGenaroter
 import com.candyhouse.app.tabs.devices.ssm2.setting.angle.SSM2SetAngleFG
-import com.candyhouse.sesame.ble.CHBleManager
-import com.candyhouse.sesame.ble.CHBleManagerDelegate
-import com.candyhouse.sesame.ble.CHSesameBleInterface
+import com.candyhouse.sesame.ble.*
+import com.candyhouse.sesame.ble.Sesame2.CHSesameBleDeviceDelegate
 import com.candyhouse.sesame.db.Model.CHMember
 import com.candyhouse.sesame.db.Model.CHMemberAndOperater
+import com.candyhouse.sesame.deviceprotocol.CHSesameIntention
 import com.candyhouse.sesame.deviceprotocol.SSM2CmdResultCode
 import com.candyhouse.sesame.deviceprotocol.SSM2ItemCode
+import com.candyhouse.sesame.deviceprotocol.SSM2MechStatus
 import com.candyhouse.utils.L
 import com.utils.alertview.enums.AlertActionStyle
 import com.utils.alertview.enums.AlertStyle
@@ -39,9 +41,9 @@ import com.kasturi.admin.genericadapter.toPx
 import com.utils.recycle.GridSpacingItemDecoration
 import com.utils.wheelview.WheelView
 import com.utils.wheelview.WheelviewAdapter
+import kotlinx.android.synthetic.main.back_sub.*
 import kotlinx.android.synthetic.main.fg_room_main.*
 import kotlinx.android.synthetic.main.fg_setting_main.*
-import kotlinx.android.synthetic.main.fg_setting_main.backicon
 import no.nordicsemi.android.dfu.DfuProgressListener
 import no.nordicsemi.android.dfu.DfuServiceInitiator
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper
@@ -49,107 +51,7 @@ import pe.startapps.alerts.ext.inputTextAlert
 import java.util.*
 
 @ExperimentalUnsignedTypes
-class SSM2SettingFG : BaseNFG() {
-    val dfuLs = object : DfuProgressListener {
-        override fun onProgressChanged(deviceAddress: String, percent: Int, speed: Float, avgSpeed: Float, currentPart: Int, partsTotal: Int) {
-            L.d("hcia", deviceAddress + ":" + percent)
-            firmwareVersion.post {
-                firmwareVersion.text = "" + percent + "%"
-            }
-        }
-
-        override fun onDeviceDisconnecting(deviceAddress: String?) {
-            L.d("hcia", deviceAddress!!)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDeviceDisconnecting"
-            }
-        }
-
-        override fun onDeviceDisconnected(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDeviceDisconnected"
-            }
-        }
-
-        override fun onDeviceConnected(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDeviceConnected"
-            }
-        }
-
-        override fun onDfuProcessStarting(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDfuProcessStarting"
-            }
-        }
-
-        override fun onDfuAborted(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDfuAborted"
-            }
-        }
-
-        override fun onEnablingDfuMode(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onEnablingDfuMode"
-            }
-        }
-
-        override fun onDfuCompleted(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDfuCompleted"
-
-                ssm?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
-                    firmwareVersion.post {
-                        firmwareVersion.text = tag_ts?.first
-                    }
-                }
-            }
-            firmwareVersion.postDelayed(Runnable {
-                ssm?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
-                    firmwareVersion.post {
-                        firmwareVersion.text = tag_ts?.first
-                    }
-                }
-            }, 5000)
-        }
-
-        override fun onFirmwareValidating(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onFirmwareValidating"
-            }
-        }
-
-        override fun onDfuProcessStarted(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDfuProcessStarted"
-            }
-        }
-
-        override fun onError(deviceAddress: String, error: Int, errorType: Int, message: String?) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onError:" + message
-            }
-        }
-
-        override fun onDeviceConnecting(deviceAddress: String) {
-            L.d("hcia", deviceAddress)
-            firmwareVersion.post {
-                firmwareVersion.text = "onDeviceConnecting:"
-            }
-        }
-
-    }
-
+class SSM2SettingFG : BaseSSMFG() {
     var memberList = ArrayList<CHMemberAndOperater>()
     var titleTextView: TextView? = null
     lateinit var mWheelView: WheelView<String>
@@ -164,33 +66,21 @@ class SSM2SettingFG : BaseNFG() {
         mWheelView.setAdapter(providerAdapter)
         mWheelView.setWheelScrollListener(object : WheelView.WheelScrollListener {
             override fun changed(selected: Int, name: Any?) {
-                L.d("hcia", "selected:" + selected + " name:" + name)
                 val second = selected + 1
-                ssm?.autolock(second) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
-                    L.d("hcia", "cmd:" + cmd)
-                    L.d("hcia", "res:" + res)
+                mSesame?.autolock(second) { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
                     autolock_status.text = second.toString()
+                    autolock_status.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+                    second_tv?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
                     mWheelView.visibility = View.GONE
                 }
             }
         })
-        titleTextView?.text = ssm?.customNickname
+        titleTextView?.text = mSesame?.customNickname
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        CHBleManager.delegate = object : CHBleManagerDelegate {
-            override fun didDiscoverSesame(device: CHSesameBleInterface) {
-                if (device.bleIdStr == ssm?.bleIdStr) {
-                    L.d("hcia", "更新設備 evice.bleIdStr :" + device.bleIdStr)
-                    ssm = device
-                    ssm?.connnect()
-
-                    return
-                }
-            }
-        }
         DfuServiceListenerHelper.registerProgressListener(activity!!, dfuLs)
     }
 
@@ -202,14 +92,43 @@ class SSM2SettingFG : BaseNFG() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mSesame?.delegate = object : CHSesameBleDeviceDelegate {
+            override fun onBleDeviceStatusChanged(device: CHSesameBleInterface, status: CHDeviceStatus) {
+                if (status.value == CHDeviceLoginStatus.logined) {
 
+                    mSesame?.getAutolockSetting() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
+                        autolock_status?.text = second.toString()
+                        autolock_status?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+                        second_tv?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+
+                        autolockSwitch?.apply {
+
+                            post {
+                                autolockSwitch.isChecked = second?.toInt() != 0
+                                setOnCheckedChangeListener { buttonView, isChecked ->
+                                    if (isChecked) {
+                                        mWheelView.visibility = View.VISIBLE
+                                    } else {
+                                        mSesame?.disableAutolock() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
+                                            autolock_status.text = second.toString()
+                                            autolock_status?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+                                            second_tv?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
         change_ssm_fr_zone.setOnClickListener {
-            L.d("hcia", "it:" + it)
-
             val alert = AlertView("", "", AlertStyle.IOS)
             alert.addAction(AlertAction(getString(R.string.ssm_update), AlertActionStyle.NEGATIVE) { action ->
-                ssm?.updateFirmware(R.raw.a6c801cdc) { a, b, c ->
-                    val starter = DfuServiceInitiator(ssm!!.ID)
+                mSesame?.updateFirmware(R.raw.sesame2) { a, b, c ->
+                    val starter = DfuServiceInitiator(mSesame!!.ID)
                     starter.setZip(R.raw.sesame2)
 //            starter.setScope(DfuServiceInitiator.SCOPE_APPLICATION)
                     starter.setPacketsReceiptNotificationsEnabled(false)
@@ -223,71 +142,62 @@ class SSM2SettingFG : BaseNFG() {
             alert.show(activity as AppCompatActivity)
 
         }
-        ssm?.getAutolockSetting() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
+        mSesame?.getAutolockSetting() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
             autolock_status?.text = second.toString()
-            autolockSwitch.apply {
+            autolock_status?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+            second_tv?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
 
+            autolockSwitch?.apply {
                 post {
                     autolockSwitch.isChecked = second?.toInt() != 0
                     setOnCheckedChangeListener { buttonView, isChecked ->
-
-                        L.d("hcia", "isChecked:" + isChecked)
-
                         if (isChecked) {
-
-                            mWheelView.visibility = View.VISIBLE
-
+                            mWheelView?.visibility = View.VISIBLE
                         } else {
-                            ssm?.disableAutolock() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
-                                autolock_status.text = second.toString()
+                            mSesame?.disableAutolock() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, second: UShort? ->
+                                autolock_status?.text = second.toString()
+                                autolock_status?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+                                second_tv?.visibility = if (second!!.toInt() == 0) View.GONE else View.VISIBLE
+                                mWheelView?.visibility = View.GONE
                             }
                         }
                     }
-
                 }
             }
         }
-        /**
-         * todo
-         *  java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.widget.Switch.post(java.lang.Runnable)' on a null object reference
-        at com.candyhouse.app.tabs.devices.ssm2.setting.SSM2SettingFG$onViewCreated$2.invoke(SSM2SettingFG.kt:235)
-        at com.candyhouse.app.tabs.devices.ssm2.setting.SSM2SettingFG$onViewCreated$2.invoke(SSM2SettingFG.kt:57)
-        at com.candyhouse.sesame.ble.Sesame2.Sesame2BleDevice$getAutolockSetting$1$1.run(Sesame2BleDevice.kt:138)
-         *
-        * */
-        ssm?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
-            firmwareVersion.post {
+        mSesame?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
+            firmwareVersion?.post {
                 firmwareVersion?.text = tag_ts?.first
             }
         }
         backicon.setOnClickListener { findNavController().navigateUp() }
         chenge_angle_zone.setOnClickListener {
-            SSM2SetAngleFG.ssm = ssm
             findNavController().navigate(R.id.action_SSM2SettingFG_to_SSM2SetAngleFG)
         }
         change_ssm_name_zone.setOnClickListener {
-            context?.inputTextAlert(getString(R.string.change_sesame_name), "") {
+            context?.inputTextAlert(getString(R.string.give_cool_name), getString(R.string.change_sesame_name), mSesame?.customNickname) {
                 confirmButtonWithText("OK") { name, ss ->
-                    ssm?.renameDevice(ss) {
+                    mSesame?.renameDevice(ss) {
                         it.onSuccess {
                             titleTextView?.post {
                                 titleTextView?.text = ss
-                                MainRoomFG.instance?.title?.text = ss
+                                MainRoomFG.instance?.titleView?.text = ss
                                 MainRoomFG.instance?.reSetName(ss)
                                 DeviceListFG.instance?.refleshPage()
                             }
                         }
                     }
+
                     dismiss()
                 }
-                cancelButton(getString(R.string.cancel))
+                cancelButton("Cancel")
             }?.show()
         }
         delete_zone.setOnClickListener {
-            val alert = AlertView(getString(R.string.ssm_delete), "", AlertStyle.IOS)
+            val alert = AlertView("", "", AlertStyle.IOS)
             alert.addAction(AlertAction(getString(R.string.ssm_delete), AlertActionStyle.NEGATIVE) { action ->
-                ssm?.unregister()
-                ssm?.unregisterServer {
+                mSesame?.unregister()
+                mSesame?.unregisterServer {
                     it.onSuccess {
                         findNavController().navigateUp()
                         findNavController().navigateUp()
@@ -305,14 +215,13 @@ class SSM2SettingFG : BaseNFG() {
 
 
         }
-        ssm?.getDeviceMembers() {
+        mSesame?.getDeviceMembers() {
             it.onSuccess {
-//                L.d("hcia", "UI收到成員it:" + it)
                 val ss: List<CHMemberAndOperater> = it.data
                 memberList.clear()
-                memberList.addAll(ss).apply {
-                    memberList.add(CHMemberAndOperater(CHMember("", "add", "", "", ""), null))
-                    memberList.add(CHMemberAndOperater(CHMember("", "delete", "", "", ""), null))
+                memberList.addAll(ss.sortedByDescending { it.member.role }).apply {
+                    memberList.add(CHMemberAndOperater(CHMember("", "", "add", "", "", ""), null))
+                    memberList.add(CHMemberAndOperater(CHMember("", "", "delete", "", "", ""), null))
                     list?.post {
                         list?.adapter?.notifyDataSetChanged()
                     }
@@ -337,6 +246,7 @@ class SSM2SettingFG : BaseNFG() {
                     return object : RecyclerView.ViewHolder(view),
                             Binder<CHMemberAndOperater> {
                         var avatar: ImageView = itemView.findViewById(R.id.avatar)
+                        var king: ImageView = itemView.findViewById(R.id.king)
 
                         @SuppressLint("SetTextI18n")
                         override fun bind(data: CHMemberAndOperater, pos: Int) {
@@ -345,23 +255,25 @@ class SSM2SettingFG : BaseNFG() {
                                 "add" -> {
                                     avatar.setImageResource(R.drawable.ic_icon_add)
                                     avatar.setOnClickListener {
-                                        AddMemberFG.ssm = ssm
+//                                        AddMemberFG.ssm = mSesame
                                         findNavController().navigate(R.id.action_SSM2SettingFG_to_addMemberFG)
                                     }
+                                    king.visibility = View.GONE
                                 }
                                 "delete" -> {
                                     avatar.setImageResource(R.drawable.ic_icon_delete)
                                     avatar.setOnClickListener {
-                                        DeleteMemberFG.ssm = ssm
                                         findNavController().navigate(R.id.action_SSM2SettingFG_to_deleteMemberFG)
                                     }
+                                    king.visibility = View.GONE
+
                                 }
                                 else -> {
+                                    king.visibility = if (data.member.role == "OWNER") View.VISIBLE else View.GONE
                                     avatar.setImageDrawable(avatatImagGenaroter(data.opetator?.firstname))
                                     avatar.setOnClickListener { }
                                 }
                             }
-
                         }
                     }
                 }
@@ -369,9 +281,100 @@ class SSM2SettingFG : BaseNFG() {
         }
     }//end view created
 
-    companion object {
-        @JvmField
-        var ssm: CHSesameBleInterface? = null
+
+    val dfuLs = object : DfuProgressListener {
+        override fun onProgressChanged(deviceAddress: String, percent: Int, speed: Float, avgSpeed: Float, currentPart: Int, partsTotal: Int) {
+            firmwareVersion.post {
+                firmwareVersion.text = "$percent%"
+            }
+        }
+
+        override fun onDeviceDisconnecting(deviceAddress: String?) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDeviceDisconnecting)//初期化中…
+            }
+        }
+
+        override fun onDeviceDisconnected(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDeviceDisconnected)//初期化中…
+            }
+        }
+
+        override fun onDeviceConnected(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDeviceConnected)//初期化中…
+            }
+        }
+
+        override fun onDfuProcessStarting(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDfuProcessStarting)//初期化中…
+            }
+        }
+
+        override fun onDfuAborted(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDfuAborted)//初期化中…
+            }
+        }
+
+        override fun onEnablingDfuMode(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onEnablingDfuMode)//初期化中…
+            }
+        }
+
+        override fun onDfuCompleted(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDfuCompleted)//完了
+
+
+                mSesame?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
+                    firmwareVersion.post {
+                        firmwareVersion.text = tag_ts?.first
+                    }
+                }
+            }
+            firmwareVersion.postDelayed(Runnable {
+                mSesame?.getVersionTag() { cmd: SSM2ItemCode?, res: SSM2CmdResultCode?, tag_ts: Pair<String, Long>? ->
+                    firmwareVersion.post {
+                        firmwareVersion.text = tag_ts?.first
+                    }
+                }
+            }, 5000)
+        }
+
+        override fun onFirmwareValidating(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onFirmwareValidating)//初期化中…
+            }
+        }
+
+        override fun onDfuProcessStarted(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDfuProcessStarted)//初期化中…
+            }
+        }
+
+        override fun onDeviceConnecting(deviceAddress: String) {
+            firmwareVersion.post {
+                firmwareVersion.text = getString(R.string.onDeviceConnecting)//初期化中…
+            }
+        }
+
+        override fun onError(deviceAddress: String, error: Int, errorType: Int, message: String?) {
+            firmwareVersion.post {
+                L.d("hcia", "errorType:" + errorType)
+                L.d("hcia", "message:" + message)
+                L.d("hcia", "error:" + error)
+                L.d("hcia", "deviceAddress:" + deviceAddress)
+                firmwareVersion.text = getString(R.string.onDfuProcessStarted) + ":" + message
+            }
+        }
+
+
     }
+
 }
 

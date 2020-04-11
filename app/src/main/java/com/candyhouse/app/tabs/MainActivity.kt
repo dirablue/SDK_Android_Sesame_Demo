@@ -17,34 +17,20 @@
 package com.candyhouse.app.tabs
 
 import android.Manifest
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.exceptions.CognitoInternalErrorException
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler
 import com.candyhouse.R
 import com.candyhouse.app.tabs.account.login.LoginFragment
 import com.candyhouse.app.tabs.friends.FriendsFG
 import com.candyhouse.server.AWSCognitoOAuthService
-import com.candyhouse.server.identityProviderCognito
 import com.candyhouse.sesame.ble.CHBleManager
 import com.candyhouse.sesame.server.CHAccountManager
-import com.candyhouse.sesame.server.CHLoginProvider
-import com.candyhouse.sesame.server.CHOauthToken
 import com.candyhouse.utils.L
 import kotlinx.android.synthetic.main.activity_main.*
 import pub.devrel.easypermissions.EasyPermissions
@@ -57,115 +43,49 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     companion object {
         var activity: MainActivity? = null
+        var nowTab = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = this
         setContentView(R.layout.activity_main)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            setShowWhenLocked(true)
-            setTurnScreenOn(true)
-
-        }
-//        L.d("hcia", "主ACtivity啟動:")
         initView()
-
-
-//        if (isDrawOverlaysAllowed()) {
-//            startService(Intent(this@MainActivity, FloatingWidgetService::class.java))
-////            startService(Intent(this@MainActivity, ShowHudService::class.java))
-//            return
-//        }else{
-//            requestForDrawingOverAppsPermission()
-//        }
-
         getPermissions()
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            window.stat = Color.BLACK
+//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//            window.statusBarColor = Color.WHITE
+        }
 
-    }
-
-    private fun isDrawOverlaysAllowed(): Boolean =
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)
-
-    private fun requestForDrawingOverAppsPermission() {
-        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-        startActivityForResult(intent, 666)
     }
 
     override fun onResume() {
         super.onResume()
-        if (AWSCognitoOAuthService.userPool.currentUser.userId == null) {
+        CHAccountManager.setupLoginSession(AWSCognitoOAuthService)
+
+        if (AWSCognitoOAuthService.userPool.currentUser.userId == null || AWSCognitoOAuthService.userToken == null) {
             LoginFragment.newInstance().show(supportFragmentManager, "")
         } else {
-            checkLogin()
+            CHBleManager.enableScan()
+            FriendsFG.instance?.refleshPage()
         }
     }
 
-    private fun checkLogin() {
-        AWSCognitoOAuthService.userPool.currentUser?.getSessionInBackground(object : AuthenticationHandler {
 
-            override fun getAuthenticationDetails(authenticationContinuation: AuthenticationContinuation, userId: String) {
-                authenticationContinuation.continueTask()
-            }
-
-            override fun authenticationChallenge(continuation: ChallengeContinuation?) {
-            }
-
-            override fun getMFACode(multiFactorAuthenticationContinuation: MultiFactorAuthenticationContinuation) {
-            }
-
-            override fun onSuccess(userSession: CognitoUserSession?, newDevice: CognitoDevice?) {
-                AWSCognitoOAuthService.userToken = userSession!!.idToken.jwtToken
-                CHAccountManager.setupLoginSession(object : CHLoginProvider {
-                    override fun oauthToken(): CHOauthToken {
-                        return CHOauthToken(identityProviderCognito, userSession.idToken.jwtToken)
-                    }
-                })
-                refreshFriend()
-            }
-
-            override fun onFailure(exception: Exception) { // Sign-in failed, check exception for the cause
-                when (exception) {
-                    is NullPointerException -> {
-                        LoginFragment.newInstance().show(supportFragmentManager, "")
-                    }
-                    is CognitoInternalErrorException -> {
-                        L.d("hcia", "CognitoInternalErrorException:" )
-                        checkLogin()
-                    }
-                    else -> {
-                        L.d("hcia", "exception:" + exception)
-                        Toast.makeText(
-                                applicationContext,
-                                exception.message,
-                                Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                }
-            }
-        })
+    override fun onPause() {
+        super.onPause()
+        CHBleManager.disableScan()
+        CHBleManager.disconnectAll()
     }
 
 
     private fun initView() {
-        right_icon.setOnClickListener {
-            L.d("hcia", "currentNavController?.value?:" + currentNavController?.value)
-        }
-        toggleAll.setOnClickListener {
-            //            startActivity(Intent(this, ScanVC().javaClass))
-//            CHBleManager.toggleAll()
-        }
         setupBottomNavigationBar()
-
     }
 
-
-    fun refreshFriend() {
-        val firstTab = supportFragmentManager.findFragmentByTag("bottomNavigation#1") as NavHostFragment
-        val fragment = firstTab.childFragmentManager.fragments.get(0) as FriendsFG
-        fragment.refleshPage()
-    }
 
     override fun onRequestPermissionsResult(
             requestCode: Int,
@@ -213,8 +133,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-//        L.d("hcia", "onPermissionsGranted CHBleManager:" + CHBleManager)
-        L.d("hcia", "UI 開動掃描 ＡＡＡ:")
         CHBleManager.enableScan()
     }
 
@@ -228,7 +146,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     private fun getPermissions() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-//            L.d("hcia", "UI 開動掃描 ＢＢＢ:")
             CHBleManager.enableScan()
         } else {
             EasyPermissions.requestPermissions(
@@ -238,10 +155,14 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     fun showProgress() {
-        pBar.visibility = View.VISIBLE
+        runOnUiThread {
+            pBar.visibility = View.VISIBLE
+        }
     }
 
     fun hideProgress() {
-        pBar.visibility = View.GONE
+        runOnUiThread {
+            pBar.visibility = View.GONE
+        }
     }
 }
