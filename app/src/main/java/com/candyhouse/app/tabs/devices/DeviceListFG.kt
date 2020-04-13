@@ -1,16 +1,16 @@
 package com.candyhouse.app.tabs.devices
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.core.view.isEmpty
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +20,8 @@ import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread
 import com.candyhouse.BuildConfig
 import com.candyhouse.R
 import com.candyhouse.app.base.BaseFG
-import com.candyhouse.app.base.BaseNFG
 import com.candyhouse.app.base.BaseSSMFG
 import com.candyhouse.app.tabs.MainActivity
-import com.candyhouse.app.tabs.devices.ssm2.room.MainRoomFG
 import com.candyhouse.app.tabs.devices.ssm2.setting.angle.SSMCellView
 import com.candyhouse.app.tabs.devices.ssm2.test.BlueSesameControlActivity
 import com.candyhouse.app.tabs.menu.BarMenuItem
@@ -33,7 +31,6 @@ import com.candyhouse.sesame.ble.*
 import com.candyhouse.sesame.ble.Sesame2.CHSesameBleDeviceDelegate
 import com.candyhouse.sesame.deviceprotocol.CHBatteryStatus
 import com.candyhouse.sesame.server.CHAccountManager
-import com.candyhouse.utils.L
 import com.kasturi.admin.genericadapter.GenericAdapter
 import com.skydoves.balloon.*
 import java.util.*
@@ -165,7 +162,7 @@ class DeviceListFG : BaseFG() {
                         var testICon: View = view.findViewById(R.id.test)
                         var battery_percent: TextView = view.findViewById(R.id.battery_percent)
                         var battery: ImageView = view.findViewById(R.id.battery)
-
+                        var deviceId: TextView = view.findViewById(R.id.deviceId)
 
                         @SuppressLint("SetTextI18n")
                         override fun bind(data: Pair<String, CHSesameBleInterface>, pos: Int) {
@@ -195,6 +192,16 @@ class DeviceListFG : BaseFG() {
                             customName.text = sesame.customNickname
                             ownerName.text = sesame.ownName
                             ownerName.visibility = if (sesame.ownName == sesame.customNickname) View.GONE else View.VISIBLE
+
+                            deviceId.text = sesame.deviceId?.toString()
+                            deviceId.isClickable = true
+                            deviceId.setOnClickListener {
+                                val clipboardManager: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                clipboardManager.setPrimaryClip(ClipData.newPlainText("", (it as TextView).text))
+
+                                Toast.makeText(it.context,"クリップボードにコピーしました", Toast.LENGTH_SHORT).show()
+                            }
+
                             toggle.setOnClickListener { sesame.toggle() }
                             toggle.setBackgroundResource(ssmUIParcer(sesame))
                             testICon.visibility = if (testSwich.isChecked) View.VISIBLE else View.GONE

@@ -8,13 +8,13 @@
     android:orientation="horizontal">
 
     <RelativeLayout
+        android:id="@+id/batteryLayout"
         android:layout_width="wrap_content"
         android:layout_height="13dp"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="12dp"
 
-        >
+        android:layout_marginTop="12dp">
 
         <ImageView
             android:id="@+id/battery"
@@ -41,11 +41,13 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/batteryLayout"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="4dp"
 
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
         android:gravity="center"
         android:text="name" />
 
@@ -63,17 +65,29 @@
         android:gravity="center"
         android:text="name" />
 
+
+    <TextView
+        android:id="@+id/deviceId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="4dp"
+        android:gravity="bottom|start"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:translationZ="10dp" />
+
     <Button
         android:id="@+id/test"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
         android:background="@drawable/app_icon"
         android:textColor="@color/white" />
-
-
-
 
     <com.candyhouse.app.tabs.devices.ssm2.setting.angle.SSMCellView
         android:id="@+id/ssmView"
